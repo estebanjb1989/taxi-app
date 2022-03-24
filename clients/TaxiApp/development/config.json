@@ -1,0 +1,28 @@
+{
+    "appName": "TaxiAppDev",
+    "appDescription": "TaxiApp development",
+    "appIdentifier": "com.taxiapp.dev",
+    "iosAppVersion": "1.0.0",
+    "androidAppVersion": 100,
+    "facebookAppId": "12345",
+    "firebaseProjectId": "taxiappdev-86986",
+    "googleApiKeys": {
+        "ios": "XXXXXXXXXXXXXXX",
+        "android": "XXXXXXXXXXXXXXX",
+        "web": "XXXXXXXXXXXXXXX",
+        "server": "XXXXXXXXXXXXXXX"
+    },
+    "assets": {
+        "logo1024": "mobile-app/assets/images/logo1024x1024.png",
+        "splash": "mobile-app/assets/images/splash.png",
+        "logo96": "mobile-app/assets/images/logo96x96.png",
+        "logo165_90": "mobile-app/assets/images/logo165x90white.png",
+        "intro": "mobile-app/assets/images/intro.jpg",
+        "background": "mobile-app/assets/images/bg.jpg",
+        "favicon": "web-app/public/favicon.ico",
+        "appleIcon": "web-app/public/apple-icon.png",
+        "logo138_75_primaryColor": "web-app/src/assets/img/logo138x75black.png",
+        "logo138_75_secondaryColor": "web-app/src/assets/img/logo138x75white.png",
+        "logo192": "web-app/src/assets/img/logo192x192.png"
+    }
+}

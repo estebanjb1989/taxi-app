@@ -1,0 +1,6 @@
+.DS_Store
+/source/common/node_modules/
+/source/functions/node_modules/
+/source/mobile-app/node_modules/
+/source/web-app/node_modules/
+/source/node_modules/

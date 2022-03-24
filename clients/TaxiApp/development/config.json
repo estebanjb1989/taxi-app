@@ -7,10 +7,10 @@
     "facebookAppId": "12345",
     "firebaseProjectId": "taxiappdev-86986",
     "googleApiKeys": {
-        "ios": "XXXXXXXXXXXXXXX",
-        "android": "XXXXXXXXXXXXXXX",
-        "web": "XXXXXXXXXXXXXXX",
-        "server": "XXXXXXXXXXXXXXX"
+        "ios": "AIzaSyDU3Go6uaHzEfoeFbp52h1a5eMMYBqzgu0",
+        "android": "AIzaSyDU3Go6uaHzEfoeFbp52h1a5eMMYBqzgu0",
+        "web": "AIzaSyDU3Go6uaHzEfoeFbp52h1a5eMMYBqzgu0",
+        "server": "AIzaSyDU3Go6uaHzEfoeFbp52h1a5eMMYBqzgu0"
     },
     "assets": {
         "logo1024": "mobile-app/assets/images/logo1024x1024.png",

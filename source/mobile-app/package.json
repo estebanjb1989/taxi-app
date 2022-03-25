@@ -9,7 +9,9 @@
     "ios": "expo start --ios",
     "clear": "expo r -c",
     "eject": "expo eject",
-    "update": "expo update"
+    "update": "expo update",
+    "gen-keys-dev": "keytool -genkeypair -v -storetype PKCS12 -keystore taxi-app-dev.keystore",
+    "list-keys-dev": "keytool -list -v -alias dev-alias -keystore ./taxi-app-dev.keystore" 
   },
   "dependencies": {
     "@firebase/app-types": "0.6.1",

@@ -355,7 +355,7 @@ export default function LandingPage(props) {
             estimate: estimatedata.estimate,
             instructionData: instructionData,
             paymentPacket: paymentPacket,
-            tripdate: bookingType === 'Book Later'? new Date(selectedDate).getTime(): new Date().getTime(),
+            tripdate: bookingType === 'Book Later' ? new Date(selectedDate).getTime() : new Date().getTime(),
             bookLater: bookingType === 'Book Later' ? true : false,
             settings: settings,
             booking_type_admin: false,

@@ -1,0 +1,6 @@
+keytool error: java.lang.Exception: Alias <dev-alias> does not exist
+java.lang.Exception: Alias <dev-alias> does not exist
+	at java.base/sun.security.tools.keytool.Main.doPrintEntry(Main.java:2034)
+	at java.base/sun.security.tools.keytool.Main.doCommands(Main.java:1267)
+	at java.base/sun.security.tools.keytool.Main.run(Main.java:416)
+	at java.base/sun.security.tools.keytool.Main.main(Main.java:409)

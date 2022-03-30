@@ -12,6 +12,7 @@
         "web": "AIzaSyDU3Go6uaHzEfoeFbp52h1a5eMMYBqzgu0",
         "server": "AIzaSyDU3Go6uaHzEfoeFbp52h1a5eMMYBqzgu0"
     },
+    "language": "es",
     "assets": {
         "logo1024": "../clients/TaxiApp/development/logo1024x1024.png",
         "splash": "mobile-app/assets/images/splash.png",

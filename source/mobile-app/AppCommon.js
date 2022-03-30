@@ -59,17 +59,12 @@ export default function AppCommon({ children }) {
             defl = value;
          }
       }
+
       i18n.translations = obj;
       i18n.fallbacks = true;
-      AsyncStorage.getItem('lang', (err, result) => {
-        if(result){
-            i18n.locale = JSON.parse(result)['langLocale'];
-            moment.locale(JSON.parse(result)['dateLocale']);
-        }else{
-            i18n.locale = defl.langLocale;
-            moment.locale(defl.dateLocale);
-        }
-      });
+      i18n.locale = defl.langLocale;
+      moment.locale(defl.dateLocale);
+      console.log(defl.langLocale)
       dispatch(api.fetchUser());
     }
   },[languagedata,dispatch,api.fetchUser]);

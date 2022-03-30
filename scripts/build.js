@@ -27,5 +27,6 @@ appConfig.googleApiKeys = {
     web: clientConfig.googleApiKeys.web,
     server: clientConfig.googleApiKeys.server,
 }
+appConfig.language = clientConfig.language
 
 fs.writeFileSync('../source/config.json', JSON.stringify(appConfig, null, 2))

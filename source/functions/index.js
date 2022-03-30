@@ -14,7 +14,7 @@ exports.googleapis = require('./google-apis');
 
 admin.initializeApp();
 
-const providers = [
+/*const providers = [
     'paypal',
     'braintree',
     'stripe',
@@ -28,6 +28,9 @@ const providers = [
     'culqi',
     'mercadopago',
     'test'
+]*/
+const providers = [
+    'mercadopago'
 ]
 
 exports.paypal = require('./providers/paypal');
@@ -72,7 +75,9 @@ exports.setup = functions.https.onRequest(async (request, response) => {
                     .then((userRecord) => {
                         const sampledb = require('./json/' + appcat + '-sample-db.json');
                         const enJson = require('./json/' + appcat + '-lang-en.json');
+                        const esJson = require('./json/' + appcat + '-lang-es.json');
                         sampledb["languages"]["lang1"]["keyValuePairs"] = enJson;
+                        sampledb["languages"]["lang2"]["keyValuePairs"] = esJson;
                         const projectId = admin.instanceId().app.options.projectId;
                         let users = {};
                         users[userRecord.uid] = {

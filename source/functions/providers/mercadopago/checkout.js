@@ -5,8 +5,8 @@ const admin = require('firebase-admin');
 const addToWallet = require('../../common').addToWallet;
 const UpdateBooking = require('../../common').UpdateBooking;
 
-const public_key = 'XXXXXXXXXXXXXX';
-const access_token = 'XXXXXXXXXXXXXX';
+const public_key = 'TEST-65acc868-e624-476a-928d-4172757e5b48';
+const access_token = 'TEST-7909677047918711-040500-dbaba47387e045b93ce64a974a7626c6-154565006';
 
 mercadopago.configure({
     access_token: access_token

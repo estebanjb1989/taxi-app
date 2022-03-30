@@ -1,20 +1,26 @@
 {
-    "cancel_reason": [{
-        "label": "Unable to Contact Driver",
-        "value": 0
-    }, {
-        "label": "Cab is not moving in my direction",
-        "value": 1
-    }, {
-        "label": "My reason is not listed",
-        "value": 2
-    }, {
-        "label": "Driver denied duty",
-        "value": 3
-    }, {
-        "label": "Cab is taking long time",
-        "value": 4
-    }],
+    "cancel_reason": [
+        {
+            "label": "Unable to Contact Driver",
+            "value": 0
+        },
+        {
+            "label": "Cab is not moving in my direction",
+            "value": 1
+        },
+        {
+            "label": "My reason is not listed",
+            "value": 2
+        },
+        {
+            "label": "Driver denied duty",
+            "value": 3
+        },
+        {
+            "label": "Cab is taking long time",
+            "value": 4
+        }
+    ],
     "promos": {
         "promo1": {
             "max_promo_discount_value": 10,
@@ -32,16 +38,16 @@
     "cartypes": {
         "type1": {
             "base_fare": 10,
-            "cancelSlab" : [
+            "cancelSlab": [
                 {
-                    "amount" : 10,
-                    "minsDelayed" : 2
+                    "amount": 10,
+                    "minsDelayed": 2
                 },
                 {
-                    "amount" : 15,
-                    "minsDelayed" : 4
+                    "amount": 15,
+                    "minsDelayed": 4
                 }
-                ],
+            ],
             "convenience_fee_type": "percentage",
             "convenience_fees": 15,
             "extra_info": "Capacity: 3, Type: Taxi",
@@ -53,16 +59,16 @@
         },
         "type2": {
             "base_fare": 12,
-            "cancelSlab" : [
+            "cancelSlab": [
                 {
-                    "amount" : 15,
-                    "minsDelayed" : 2
+                    "amount": 15,
+                    "minsDelayed": 2
                 },
                 {
-                    "amount" : 20,
-                    "minsDelayed" : 4
+                    "amount": 20,
+                    "minsDelayed": 4
                 }
-                ],
+            ],
             "convenience_fee_type": "percentage",
             "convenience_fees": 15,
             "extra_info": "Capacity: 4, Type: HatchBack",
@@ -74,16 +80,16 @@
         },
         "type3": {
             "base_fare": 15,
-            "cancelSlab" : [
+            "cancelSlab": [
                 {
-                    "amount" : 20,
-                    "minsDelayed" : 2
+                    "amount": 20,
+                    "minsDelayed": 2
                 },
                 {
-                    "amount" : 25,
-                    "minsDelayed" : 4
+                    "amount": 25,
+                    "minsDelayed": 4
                 }
-                ],
+            ],
             "convenience_fee_type": "percentage",
             "convenience_fees": 15,
             "extra_info": "Capacity: 4, Type: Sedan",
@@ -103,8 +109,8 @@
         "otp_secure": false,
         "email_verify": false,
         "bonus": 10,
-        "panic":991,
-        "convert_to_mile":false,
+        "panic": 991,
+        "convert_to_mile": false,
         "CarHornRepeat": true,
         "CompanyName": "Exicube App Solutions",
         "CompanyWebsite": "https://exicube.com",
@@ -118,24 +124,30 @@
         "contact_email": "",
         "license": "",
         "AllowCriticalEditsAdmin": true,
-        "AllowCountrySelection":true,
-        "MobileLoginEnabled":true,
-        "FacebookLoginEnabled":true,
-        "AppleLoginEnabled":true,
-        "autoDispatch":true,
+        "AllowCountrySelection": true,
+        "MobileLoginEnabled": true,
+        "FacebookLoginEnabled": true,
+        "AppleLoginEnabled": true,
+        "autoDispatch": true,
         "driverRadius": 10,
-        "country": "India",
+        "country": "Argentina",
         "RiderWithDraw": true,
         "swipe_symbol": false,
-        "restrictCountry" : "",
+        "restrictCountry": "",
         "negativeBalance": false
     },
-    "languages":{
-        "lang1":{
+    "languages": {
+        "lang1": {
             "langName": "English",
             "langLocale": "en",
-            "default":true,
+            "default": false,
             "dateLocale": "en-gb"
+        },
+        "lang2": {
+            "langName": "Spanish",
+            "langLocale": "es",
+            "default": true,
+            "dateLocale": "es-AR"
         }
     }
 }

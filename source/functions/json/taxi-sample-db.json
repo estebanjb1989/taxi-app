@@ -148,6 +148,12 @@
       "langLocale": "es",
       "default": true,
       "dateLocale": "es-AR"
+    },
+    "lang3": {
+      "langName": "Portuguese",
+      "langLocale": "po",
+      "default": false,
+      "dateLocale": "po-RE"
     }
   }
 }

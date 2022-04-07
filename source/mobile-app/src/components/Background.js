@@ -1,21 +1,21 @@
 import React from 'react';
 import {
   StyleSheet,
-  ImageBackground
+  View,
 } from 'react-native';
+import { colors } from '../common/theme'
 
 export default function Background(props) {
   return (
-    <ImageBackground style={styles.imgBackground}
-      resizeMode='cover'
-      source={require('../../assets/images/background.jpg')}>
+    <View style={styles.background}>
       {props.children}
-    </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  imgBackground: {
+  background: {
+    backgroundColor: colors.BACKGROUND,
     width: '100%',
     height: '100%',
     flex: 1

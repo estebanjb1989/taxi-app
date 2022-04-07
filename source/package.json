@@ -9,6 +9,7 @@
     "app:build-ios": "cd mobile-app && expo build:ios",
     "app:build-android": "cd mobile-app && expo build:android",
     "app:push": "cd mobile-app && expo push:android:upload  --api-key",
+    "cms": "cd cms && yarn start",
     "web": "yarn workspace web-app start",
     "deploy": "yarn workspace web-app build && firebase deploy",
     "common": "yarn workspace common build && yarn workspace web-app add common@1.0.0 --force && yarn workspace mobile-app add common@1.0.0 --force && patch-package",

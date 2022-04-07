@@ -216,9 +216,7 @@ export default function EmailLoginScreen(props) {
     return (
 
         <KeyboardAvoidingView behavior={"position"} style={styles.container}>
-            <ImageBackground
-                source={require('../../assets/images/bg.jpg')}
-                resizeMode="stretch"
+            <View
                 style={styles.imagebg}
             >
                 <FirebaseRecaptchaVerifierModal
@@ -243,12 +241,13 @@ export default function EmailLoginScreen(props) {
                         borderColor: 'transparent',
                     }}
                     activeTabStyle={{ borderBottomColor: colors.BACKGROUND, backgroundColor: 'transparent', borderBottomWidth: 2, marginTop: 2 }}
-                    tabTextStyle={{ color: colors.WHITE, fontWeight: 'bold' }}
+                    tabTextStyle={{ color: 'grey', fontWeight: 'bold' }}
                     activeTabTextStyle={{ color: colors.BACKGROUND }}
                 />
                 {state.customStyleIndex == 0 ?
                     <View style={styles.box1}>
                         <TextInput
+                            autoCapitalize={false}
                             ref={emailInput}
                             style={[styles.textInput,{textAlign:isRTL? "right":"left"}]}
                             placeholder={t('email_placeholder')}
@@ -265,6 +264,7 @@ export default function EmailLoginScreen(props) {
                             placeholder={t('password_placeholder')}
                             onChangeText={(value) => setState({ ...state, password: value })}
                             value={state.password}
+                            autoCapitalize={false}
                             secureTextEntry={true}
                         />
                     </View>
@@ -347,7 +347,7 @@ export default function EmailLoginScreen(props) {
                         <ActivityIndicator color={colors.BLACK} size='large' />
                     </View>
                     : null}
-            </ImageBackground>
+            </View>
         </KeyboardAvoidingView>
 
     );
@@ -368,6 +368,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     imagebg: {
+        backgroundColor: colors.BRANDING,
         position: 'absolute',
         left: 0,
         top: 0,
@@ -386,7 +387,6 @@ const styles = StyleSheet.create({
         marginTop: 30,
     },
     segmentcontrol: {
-        color: colors.WHITE,
         fontSize: 18,
         fontFamily: "Roboto-Regular",
         marginTop: 0,
@@ -397,36 +397,35 @@ const styles = StyleSheet.create({
     },
 
     box1: {
-        height: 35,
         backgroundColor: colors.WHITE,
         marginTop: 26,
         marginLeft: 35,
         marginRight: 35,
         borderWidth: 1,
         borderColor: colors.BORDER_BACKGROUND,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderRadius: 8,
     },
     box2: {
-        height: 35,
         backgroundColor: colors.WHITE,
         marginTop: 12,
         marginLeft: 35,
         marginRight: 35,
         borderWidth: 1,
         borderColor: colors.BORDER_BACKGROUND,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderRadius: 9,
     },
     textInput: {
         color: colors.BACKGROUND,
-        fontSize: 18,
+        fontSize: 16,
         fontFamily: "Roboto-Regular",
-        //textAlign: "left",
-        marginTop: 8,
-        marginLeft: 5
+        padding: 12,
+        borderRadius: 8,
     },
     materialButtonDark: {
-        height: 35,
-        marginTop: 22,
+        padding: 24,
+        marginTop: 12,
         marginLeft: 35,
         marginRight: 35,
         backgroundColor: colors.BUTTON,
@@ -446,7 +445,7 @@ const styles = StyleSheet.create({
     linkText: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: colors.WHITE,
+
         fontFamily: "Roboto-Bold",
     },
     pickerStyle: {
@@ -454,6 +453,7 @@ const styles = StyleSheet.create({
         fontFamily: "Roboto-Regular",
         fontSize: 18,
         marginLeft: 5,
+        height: 50,
     },
 
     actionLine: {

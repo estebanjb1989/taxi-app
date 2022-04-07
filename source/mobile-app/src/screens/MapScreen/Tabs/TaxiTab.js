@@ -9,11 +9,11 @@ import {
     Alert,
     ScrollView,
     StatusBar,
-    Animated
+    Animated,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Icon, Tooltip, Button } from 'react-native-elements';
-import { colors } from '../common/theme';
+import { Icon, Button } from 'react-native-elements';
+import { colors } from '../../../common/theme';
 import * as Location from 'expo-location';
 var { height, width } = Dimensions.get('window');
 import i18n from 'i18n-js';
@@ -21,10 +21,11 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useSelector, useDispatch } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import { FirebaseContext } from 'common/src';
-import { OptionModal } from '../components/OptionModal';
-import { LoadingModal } from '../components/LoadingModal';
-import BookingModal from '../components/BookingModal';
+import { OptionModal } from 'components/OptionModal';
+import { LoadingModal } from 'components/LoadingModal';
+import BookingModal from 'components/BookingModal';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import Footer from './components/Footer'
 
 const hasNotch = Platform.OS === 'ios' && !Platform.isPad && !Platform.isTVOS && ((height === 780 || width === 780) || (height === 812 || width === 812) || (height === 844 || width === 844) || (height === 896 || width === 896) || (height === 926 || width === 926))
 
@@ -50,7 +51,7 @@ export default function MapScreen(props) {
     const dispatch = useDispatch();
     const { t } = i18n;
     const isRTL = i18n.locale.indexOf('he') === 0 || i18n.locale.indexOf('ar') === 0;
-    
+
     const auth = useSelector(state => state.auth);
     const settings = useSelector(state => state.settingsdata.settings);
     const cars = useSelector(state => state.cartypes.cars);
@@ -94,7 +95,7 @@ export default function MapScreen(props) {
     const bookingdata = useSelector(state => state.bookingdata);
     const [locationRejected, setLocationRejected] = useState(false);
     const mapRef = useRef();
-    const [dragging,setDragging] = useState(0);
+    const [dragging, setDragging] = useState(0);
 
     const animation = useRef(new Animated.Value(4)).current;
     const [isEditing, setIsEditing] = useState(false);
@@ -103,8 +104,8 @@ export default function MapScreen(props) {
     const [bookingType, setBookingType] = useState(false);
 
     useEffect(() => {
-        if (tripdata.drop && tripdata.drop.add ) {
-            setIsEditing( true);
+        if (tripdata.drop && tripdata.drop.add) {
+            setIsEditing(true);
         }
     }, [tripdata]);
 
@@ -112,7 +113,7 @@ export default function MapScreen(props) {
         Animated.timing(animation, {
             toValue: !isEditing ? 4 : 0,
             duration: 300,
-            useNativeDriver:false,
+            useNativeDriver: false,
             easing
         }).start();
     }, [isEditing]);
@@ -149,15 +150,15 @@ export default function MapScreen(props) {
 
     useEffect(() => {
         if (tripdata.selected && tripdata.selected == 'pickup' && tripdata.pickup && tripdata.pickup.source == 'search') {
-            if(!locationRejected){
+            if (!locationRejected) {
                 mapRef.current.animateToRegion(
-                {
-                    latitude: tripdata.pickup.lat,
-                    longitude: tripdata.pickup.lng,
-                    latitudeDelta: latitudeDelta,
-                    longitudeDelta: longitudeDelta
-                });
-            }else{
+                    {
+                        latitude: tripdata.pickup.lat,
+                        longitude: tripdata.pickup.lng,
+                        latitudeDelta: latitudeDelta,
+                        longitudeDelta: longitudeDelta
+                    });
+            } else {
                 setRegion({
                     latitude: tripdata.pickup.lat,
                     longitude: tripdata.pickup.lng,
@@ -167,14 +168,14 @@ export default function MapScreen(props) {
             }
         }
         if (tripdata.selected && tripdata.selected == 'drop' && tripdata.drop && tripdata.drop.source == 'search') {
-            if(!locationRejected){
+            if (!locationRejected) {
                 mapRef.current.animateToRegion({
                     latitude: tripdata.drop.lat,
                     longitude: tripdata.drop.lng,
                     latitudeDelta: latitudeDelta,
                     longitudeDelta: longitudeDelta
                 });
-            }else{
+            } else {
                 setRegion({
                     latitude: tripdata.drop.lat,
                     longitude: tripdata.drop.lng,
@@ -214,7 +215,7 @@ export default function MapScreen(props) {
         if (gps.location) {
             if (gps.location.lat && gps.location.lng) {
                 setDragging(0);
-                if(region){
+                if (region) {
                     mapRef.current.animateToRegion({
                         latitude: gps.location.lat,
                         longitude: gps.location.lng,
@@ -222,7 +223,7 @@ export default function MapScreen(props) {
                         longitudeDelta: longitudeDelta
                     });
                 }
-                else{
+                else {
                     setRegion({
                         latitude: gps.location.lat,
                         longitude: gps.location.lng,
@@ -233,7 +234,7 @@ export default function MapScreen(props) {
                 updateAddresses({
                     latitude: gps.location.lat,
                     longitude: gps.location.lng
-                }, region?'gps': 'init');
+                }, region ? 'gps' : 'init');
             } else {
                 setLocationRejected(true);
                 setLoadingModal(false);
@@ -265,11 +266,11 @@ export default function MapScreen(props) {
                 accuracy: Location.Accuracy.Balanced
             }, location => {
                 dispatch({
-                  type: 'UPDATE_GPS_LOCATION',
-                  payload: {
-                    lat: location.coords.latitude,
-                    lng: location.coords.longitude
-                  }
+                    type: 'UPDATE_GPS_LOCATION',
+                    payload: {
+                        lat: location.coords.latitude,
+                        lng: location.coords.longitude
+                    }
                 });
                 tempWatcher.remove();
             })
@@ -312,7 +313,7 @@ export default function MapScreen(props) {
 
 
     const onRegionChangeComplete = (newregion, gesture) => {
-        if (gesture && gesture.isGesture)  {
+        if (gesture && gesture.isGesture) {
             updateAddresses({
                 latitude: newregion.latitude,
                 longitude: newregion.longitude
@@ -359,7 +360,7 @@ export default function MapScreen(props) {
                         if (distance < ((settings && settings.driverRadius) ? settings.driverRadius : 10)) {
                             let destLoc = '"' + driver.location.lat + ', ' + driver.location.lng + '"';
                             driver.arriveDistance = distance;
-                            driver.arriveTime = settings.AllowCriticalEditsAdmin ? await getDriveTime(startLoc, destLoc) : { timein_text: ((distance * 2) + 1).toFixed(0) + ' min'}
+                            driver.arriveTime = settings.AllowCriticalEditsAdmin ? await getDriveTime(startLoc, destLoc) : { timein_text: ((distance * 2) + 1).toFixed(0) + ' min' }
                             for (let i = 0; i < cars.length; i++) {
                                 if (cars[i].name == driver.carType) {
                                     driver.carImage = cars[i].image;
@@ -422,14 +423,14 @@ export default function MapScreen(props) {
         } else {
             setDragging(0)
             if (selection == 'drop' && tripdata.selected && tripdata.selected == 'drop') {
-                 mapRef.current.animateToRegion({
+                mapRef.current.animateToRegion({
                     latitude: tripdata.drop.lat,
                     longitude: tripdata.drop.lng,
                     latitudeDelta: latitudeDelta,
                     longitudeDelta: longitudeDelta
                 });
             } else {
-                 mapRef.current.animateToRegion({
+                mapRef.current.animateToRegion({
                     latitude: tripdata.pickup.lat,
                     longitude: tripdata.pickup.lng,
                     latitudeDelta: latitudeDelta,
@@ -444,10 +445,10 @@ export default function MapScreen(props) {
     //Go to confirm booking page
     const onPressBook = async () => {
         setBookLoading(true);
-        if(!(profile.mobile && profile.mobile.length > 6)){
+        if (!(profile.mobile && profile.mobile.length > 6)) {
             Alert.alert(t('alert'), t('phone_no_update'));
             setBookLoading(false);
-        } else{
+        } else {
             if (tripdata.pickup && tripdata.drop && tripdata.drop.add) {
                 if (!tripdata.carType) {
                     setBookLoading(false);
@@ -496,9 +497,9 @@ export default function MapScreen(props) {
 
 
     const onPressBookLater = () => {
-        if(!(profile.mobile && profile.mobile.length > 6)){
+        if (!(profile.mobile && profile.mobile.length > 6)) {
             Alert.alert(t('alert'), t('phone_no_update'));
-        } else{
+        } else {
             if (tripdata.pickup && tripdata.drop && tripdata.drop.add) {
                 if (tripdata.carType) {
                     setPickerConfig({
@@ -632,7 +633,7 @@ export default function MapScreen(props) {
                     userDetails: auth.info,
                     estimate: estimatedata.estimate,
                     instructionData: instructionData,
-                    tripdate: bookingType ? new Date(bookingDate).getTime():new Date().getTime(),
+                    tripdate: bookingType ? new Date(bookingDate).getTime() : new Date().getTime(),
                     bookLater: bookingType,
                     settings: settings,
                     booking_type_admin: false
@@ -653,7 +654,7 @@ export default function MapScreen(props) {
                 carDetails: estimatedata.estimate.carDetails,
                 userDetails: auth.info,
                 estimate: estimatedata.estimate,
-                tripdate: bookingType ? new Date(bookingDate).getTime():new Date().getTime(),
+                tripdate: bookingType ? new Date(bookingDate).getTime() : new Date().getTime(),
                 bookLater: bookingType,
                 settings: settings,
                 booking_type_admin: false
@@ -687,7 +688,7 @@ export default function MapScreen(props) {
                         style={styles.mapViewStyle}
                         initialRegion={region}
                         onRegionChangeComplete={onRegionChangeComplete}
-                        onPanDrag={()=>setDragging(30)}
+                        onPanDrag={() => setDragging(30)}
                     >
                         {freeCars ? freeCars.map((item, index) => {
                             return (
@@ -704,21 +705,21 @@ export default function MapScreen(props) {
 
                             )
                         })
-                        : null}
+                            : null}
                     </MapView>
                     : null}
                 {region ?
                     tripdata.selected == 'pickup' ?
                         <View pointerEvents="none" style={styles.mapFloatingPinView}>
-                            <Image pointerEvents="none" style={[styles.mapFloatingPin,{ marginBottom: Platform.OS =='ios'? (hasNotch? (-10 + dragging) :33): 40}]} resizeMode="contain" source={require('../../assets/images/green_pin.png')} />
+                            <Image pointerEvents="none" style={[styles.mapFloatingPin, { marginBottom: Platform.OS == 'ios' ? (hasNotch ? (-10 + dragging) : 33) : 40 }]} resizeMode="contain" source={require('../../../../assets/images/green_pin.png')} />
                         </View>
                         :
                         <View pointerEvents="none" style={styles.mapFloatingPinView}>
-                            <Image pointerEvents="none" style={[styles.mapFloatingPin,{ marginBottom: Platform.OS =='ios'? (hasNotch? (-10 + dragging) :33): 40}]} resizeMode="contain" source={require('../../assets/images/rsz_2red_pin.png')} />
+                            <Image pointerEvents="none" style={[styles.mapFloatingPin, { marginBottom: Platform.OS == 'ios' ? (hasNotch ? (-10 + dragging) : 33) : 40 }]} resizeMode="contain" source={require('../../../../assets/images/rsz_2red_pin.png')} />
                         </View>
                     : null}
                 {tripdata.selected == 'pickup' ?
-                    <View style={[styles.locationButtonView,{bottom: isEditing ? 260 : 40}]}>
+                    <View style={[styles.locationButtonView, { bottom: isEditing ? 260 : 40 }]}>
                         <TouchableOpacity onPress={locateUser} style={styles.locateButtonStyle}>
                             <Icon
                                 name='gps-fixed'
@@ -734,27 +735,12 @@ export default function MapScreen(props) {
                     </View>
                     : null}
             </View>
-            <View style={styles.buttonBar}>
-                <Button
-                    title={t('book_later_button')}
-                    loading={bookLaterLoading}
-                    loadingProps={{ size: "large", color: colors.WHITE }}
-                    titleStyle={styles.buttonTitleStyle}
-                    onPress={onPressBookLater}
-                    buttonStyle={[styles.buttonStyle, { backgroundColor: colors.BUTTON_BACKGROUND }]}
-                    containerStyle={styles.buttonContainer}
-                />
-                <Button
-                    title={t('book_now_button')}
-                    loading={bookLoading}
-                    loadingProps={{ size: "large", color: colors.WHITE }}
-                    titleStyle={styles.buttonTitleStyle}
-                    onPress={onPressBook}
-                    buttonStyle={[styles.buttonStyle, { backgroundColor: appcat == 'taxi' ? colors.BUTTON_YELLOW : colors.BUTTON_ORANGE }]}
-                    containerStyle={styles.buttonContainer}
-                />
-            </View>
-            <View style={[styles.menuIcon, isRTL ? {right:20}:{left:20}]}>
+            <Footer bookLaterLoading={bookLaterLoading}
+                bookLoading={bookLoading}
+                onPressBook={onPressBook}
+                onPressBookLater={onPressBookLater}
+            />
+            <View style={[styles.menuIcon, isRTL ? { right: 20 } : { left: 20 }]}>
                 <TouchableOpacity onPress={() => { props.navigation.toggleDrawer() }} style={styles.menuIconButton} >
                     <Icon
                         name='menu'
@@ -774,26 +760,26 @@ export default function MapScreen(props) {
                     </TouchableOpacity>
                 </View>
                 :
-                <View style={[isRTL ? styles.topTitle1 : styles.topTitle, { width: 110}]}>
-                    <Text style={{ marginHorizontal: 7, textAlign: 'center', color: '#517fa4', fontFamily: 'Roboto-Bold', fontSize: 18, }}>{t('home')}</Text>
+                <View style={[isRTL ? styles.topTitle1 : styles.topTitle, { width: 110 }]}>
+                    <Text style={{ marginHorizontal: 7, textAlign: 'center', color: '#517fa4', fontFamily: 'Roboto-Bold', fontSize: 18, }}>Taxi</Text>
                 </View>
             }
-            <View style={[styles.addressBar,{flexDirection: isRTL? 'row-reverse' : 'row'}]}>
+            <View style={[styles.addressBar, { flexDirection: isRTL ? 'row-reverse' : 'row' }]}>
                 <View style={styles.ballandsquare}>
                     <View style={styles.hbox1} /><View style={styles.hbox2} /><View style={styles.hbox3} />
                 </View>
-                <View style={styles.contentStyle, isRTL? {paddingRight: 10} : {paddingLeft: 10}}>
+                <View style={styles.contentStyle, isRTL ? { paddingRight: 10 } : { paddingLeft: 10 }}>
                     <TouchableOpacity onPress={() => tapAddress('pickup')} style={styles.addressStyle1}>
-                        <Text numberOfLines={1} style={[styles.textStyle, tripdata.selected == 'pickup' ? { fontSize: 18 }:{ fontSize: 14 },{textAlign:isRTL? "right":"left"} ]}>{tripdata.pickup && tripdata.pickup.add ? tripdata.pickup.add : t('map_screen_where_input_text')}</Text>
+                        <Text numberOfLines={1} style={[styles.textStyle, tripdata.selected == 'pickup' ? { fontSize: 18 } : { fontSize: 14 }, { textAlign: isRTL ? "right" : "left" }]}>{tripdata.pickup && tripdata.pickup.add ? tripdata.pickup.add : t('map_screen_where_input_text')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => tapAddress('drop')} style={styles.addressStyle2}>
-                        <Text numberOfLines={1} style={[styles.textStyle, tripdata.selected == 'drop' ? { fontSize: 18 }:{ fontSize: 14 },{textAlign:isRTL? "right":"left"} ]}>{tripdata.drop && tripdata.drop.add ? tripdata.drop.add : t('map_screen_drop_input_text')}</Text>
+                        <Text numberOfLines={1} style={[styles.textStyle, tripdata.selected == 'drop' ? { fontSize: 18 } : { fontSize: 14 }, { textAlign: isRTL ? "right" : "left" }]}>{tripdata.drop && tripdata.drop.add ? tripdata.drop.add : t('map_screen_drop_input_text')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
 
             {isEditing == true ?
-                <View style={[styles.carShow,{height: 250, alignItems: 'center', flexDirection: 'column', backgroundColor: isEditing == true ? colors.BACKGROUND_PRIMARY : colors.WHITE}]}
+                <View style={[styles.carShow, { height: 250, alignItems: 'center', flexDirection: 'column', backgroundColor: colors.BACKGROUND }]}
                     onTouchStart={e => setTouchY(e.nativeEvent.pageY)}
                     onTouchEnd={e => {
                         if ((touchY - e.nativeEvent.pageY > 10) && !isEditing)
@@ -803,46 +789,46 @@ export default function MapScreen(props) {
                     }}
                 >
                     <View style={styles.bar} ></View>
-                   
-                    <Animated.View style={{ alignItems: 'center', backgroundColor: colors.BACKGROUND_PRIMARY, flex: animation, marginTop: 10 }}>
+
+                    <Animated.View style={{ alignItems: 'center', backgroundColor: colors.BACKGROUND, flex: animation, marginTop: 10 }}>
                         <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
-                        {allCarTypes.map((prop, key) => {
-                            return (
-                                <TouchableOpacity 
-                                style={[styles.carContainer,{ backgroundColor: prop.active == true ? colors.BOX_BG : colors.WHITE}]}
-                                onPress={() => { selectCarType(prop, key) }}
-                                key={key}
-                            >
-                            <Image
-                                source={prop.image ? { uri: prop.image } : require('../../assets/images/microBlackCar.png')}
-                                resizeMode="contain"
-                                style={styles.cardItemImagePlace}
-                              ></Image>
-                              <View style={[styles.bodyContent, {alignContent:'center',flexDirection:'column', justifyContent:'center'}]}>
-                                <Text style={styles.titleStyles}>{prop.name.toUpperCase()}</Text>
-                                <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-                                {settings.swipe_symbol===false?
-                                    <Text style={[styles.text2, { fontWeight: 'bold', color: colors.MAP_TEXT }]}>{settings.symbol}{prop.rate_per_unit_distance} / {settings.convert_to_mile ? t('mile') : t('km')} </Text>
-                                    :
-                                    <Text style={[styles.text2, { fontWeight: 'bold', color: colors.MAP_TEXT }]}>{prop.rate_per_unit_distance}{settings.symbol} / {settings.convert_to_mile ? t('mile') : t('km')} </Text>
-                                }
-                                { prop.extra_info && prop.extra_info != '' ?
-                                    <View style={{ justifyContent: 'space-around',  marginLeft: 3 }}>
-                                        {
-                                            prop.extra_info.split().map((ln) => <Text key={ln} style={[styles.text2, { fontWeight: 'bold', color: colors.MAP_TEXT }]} >{ln}</Text>)
-                                        }
-                                    </View>
-                                : null }
-                                </View>
-                                <Text style={styles.text2}>({prop.minTime != '' ? prop.minTime : t('not_available')})</Text>
-                              </View>
-                            </TouchableOpacity>
-                            );
-                        })}
+                            {allCarTypes.map((prop, key) => {
+                                return (
+                                    <TouchableOpacity
+                                        style={[styles.carContainer, { backgroundColor: prop.active == true ? colors.BOX_BG : colors.WHITE }]}
+                                        onPress={() => { selectCarType(prop, key) }}
+                                        key={key}
+                                    >
+                                        <Image
+                                            source={prop.image ? { uri: prop.image } : require('../../../../assets/images/microBlackCar.png')}
+                                            resizeMode="contain"
+                                            style={styles.cardItemImagePlace}
+                                        ></Image>
+                                        <View style={[styles.bodyContent, { alignContent: 'center', flexDirection: 'column', justifyContent: 'center' }]}>
+                                            <Text style={styles.titleStyles}>{prop.name.toUpperCase()}</Text>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                {settings.swipe_symbol === false ?
+                                                    <Text style={[styles.text2, { fontWeight: 'bold', color: colors.MAP_TEXT }]}>{settings.symbol}{prop.rate_per_unit_distance} / {settings.convert_to_mile ? t('mile') : t('km')} </Text>
+                                                    :
+                                                    <Text style={[styles.text2, { fontWeight: 'bold', color: colors.MAP_TEXT }]}>{prop.rate_per_unit_distance}{settings.symbol} / {settings.convert_to_mile ? t('mile') : t('km')} </Text>
+                                                }
+                                                {prop.extra_info && prop.extra_info != '' ?
+                                                    <View style={{ justifyContent: 'space-around', marginLeft: 3 }}>
+                                                        {
+                                                            prop.extra_info.split().map((ln) => <Text key={ln} style={[styles.text2, { fontWeight: 'bold', color: colors.MAP_TEXT }]} >{ln}</Text>)
+                                                        }
+                                                    </View>
+                                                    : null}
+                                            </View>
+                                            <Text style={styles.text2}>({prop.minTime != '' ? prop.minTime : t('not_available')})</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                );
+                            })}
                         </ScrollView>
                     </Animated.View>
                 </View>
-            : null }
+                : null}
 
             {!isEditing == true ?
                 <View style={styles.carShow}
@@ -856,7 +842,7 @@ export default function MapScreen(props) {
                 >
                     <View style={styles.bar} ></View>
                 </View>
-            : null }
+                : null}
 
             <LoadingModal loadingModal={loadingModal} />
             {appcat == 'delivery' ?
@@ -951,45 +937,57 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 25,
         justifyContent: 'center',
         position: 'absolute',
-        left:0,
+        left: 0,
         top: hasNotch ? 40 : 20
     },
     mapcontainer: {
-        flex:1,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
     mapViewStyle: {
-        flex:1,
+        flex: 1,
         ...StyleSheet.absoluteFillObject,
     },
-    mapFloatingPinView:{ 
-        position: 'absolute', 
+    mapFloatingPinView: {
+        position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        alignItems: 'center', 
+        alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'transparent'
     },
-    mapFloatingPin:{
+    mapFloatingPin: {
         height: 40
     },
     buttonBar: {
-        height: 60,
-        width: width,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'center',
+        paddingLeft: 12,
+        paddingRight: 12,
+        backgroundColor: colors.BACKGROUND,
+        paddingBottom: 12,
     },
-    buttonContainer: {
-        width: width / 2,
-        height: 60
+    bookLaterContainer: {
+        height: 60,
+        borderTopLeftRadius: 30,
+        borderBottomLeftRadius: 30,
+        borderRadius: 0,
+    },
+    bookNowContainer: {
+        height: 60,
+        borderRadius: 0,
+        borderTopRightRadius: 30,
+        borderBottomRightRadius: 30,
     },
     buttonStyle: {
-        width: width / 2,
         height: 60,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 0,
+        width: 180,
     },
     buttonTitleStyle: {
         color: colors.WHITE,
@@ -1012,7 +1010,7 @@ const styles = StyleSheet.create({
             width: 0
         },
     },
-    locateButtonStyle:{
+    locateButtonStyle: {
         height: Platform.OS == 'ios' ? 55 : 42,
         width: Platform.OS == 'ios' ? 55 : 42,
         alignItems: 'center',
@@ -1143,9 +1141,9 @@ const styles = StyleSheet.create({
         height: 28,
         flexDirection: 'row',
         justifyContent: 'center',
-        backgroundColor: colors.BACKGROUND_PRIMARY, 
+        backgroundColor: colors.BACKGROUND,
         position: 'absolute',
-        bottom: 60,
+        bottom: 72,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10
     },
@@ -1161,40 +1159,40 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         width: width - 30,
         height: 70,
-        marginBottom:5,
-        marginLeft:15,
-        marginRight:15,
-        backgroundColor:colors.WHITE,
+        marginBottom: 5,
+        marginLeft: 15,
+        marginRight: 15,
+        backgroundColor: colors.WHITE,
         borderRadius: 6,
-        borderWidth:1,
-        borderColor:colors.BORDER_BACKGROUND,
+        borderWidth: 1,
+        borderColor: colors.BORDER_BACKGROUND,
         elevation: 3,
-      },
-      bodyContent: {
+    },
+    bodyContent: {
         flex: 1
-      },
-      titleStyles: {
+    },
+    titleStyles: {
         fontSize: 14,
         color: colors.HEADER,
         paddingBottom: 2,
-        fontWeight:'bold'
-      },
-      subtitleStyle: {
+        fontWeight: 'bold'
+    },
+    subtitleStyle: {
         fontSize: 12,
         color: colors.BALANCE_ADD,
         lineHeight: 16,
         paddingBottom: 2
-      },
-      priceStyle:{
+    },
+    priceStyle: {
         color: colors.BALANCE_ADD,
-        fontWeight:'bold',
+        fontWeight: 'bold',
         fontSize: 12,
         lineHeight: 14,
-      },
-      cardItemImagePlace: {
+    },
+    cardItemImagePlace: {
         width: 60,
-        height:50,
+        height: 50,
         margin: 10,
         borderRadius: 5
-      }
+    }
 });

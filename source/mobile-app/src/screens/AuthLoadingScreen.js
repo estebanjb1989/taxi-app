@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { FirebaseContext } from 'common/src';
 import * as Notifications from 'expo-notifications';
 import { colors } from '../common/theme';
+import { createAnimatedPropAdapter } from 'react-native-reanimated';
 
 export default function AuthLoadingScreen(props) {
   const { t } = i18n;
@@ -42,6 +43,7 @@ export default function AuthLoadingScreen(props) {
             }
           }
         });
+       
         if (auth.info.profile.approved) {
           if (role === 'rider') {
             dispatch(api.monitorProfileChanges());

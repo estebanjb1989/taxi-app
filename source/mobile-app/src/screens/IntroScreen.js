@@ -76,6 +76,7 @@ export default function IntroScreen(props) {
             } else if(auth.error.msg.message === t('email_verify_message')){
                 Alert.alert(t('alert'), t('email_verify_message'));
             } else{
+                console.log(auth)
                 Alert.alert(t('alert'), t('login_error'));
             }
             dispatch(clearLoginError());
@@ -84,6 +85,7 @@ export default function IntroScreen(props) {
 
     const FbLogin = async () => {
         try {
+
             await Facebook.initializeAsync({ appId: Constants.manifest.facebookAppId });
             const {
                 type,
@@ -149,9 +151,7 @@ export default function IntroScreen(props) {
 
 
     return (
-        <ImageBackground
-            source={require('../../assets/images/bg.jpg')}
-            resizeMode="stretch"
+        <View
             style={styles.imagebg}
         >
             <View style={styles.topSpace}></View>
@@ -238,7 +238,7 @@ export default function IntroScreen(props) {
                     <Text style={styles.actionText}>{t('terms')}</Text>
                 </TouchableOpacity>
             </View>
-        </ImageBackground>
+        </View>
     );
 }
 
@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     imagebg: {
+        backgroundColor: colors.BRANDING,
         position: 'absolute',
         left: 0,
         top: 0,
@@ -261,14 +262,13 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width
     },
     materialButtonDark: {
-        height: 40,
+        
         marginTop: 20,
         marginLeft: 35,
         marginRight: 35,
         backgroundColor: colors.BUTTON,
     },
     materialButtonDark2: {
-        height: 40,
         marginTop: 14,
         marginLeft: 35,
         marginRight: 35,
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     },
     pickerStyle: {
         color: colors.BLACK,
-        width: 50,
+        paddingHorizontal: 24,
         fontSize: 20,
         height: 30,
         marginLeft: 3,

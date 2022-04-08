@@ -27,11 +27,12 @@ const styles = StyleSheet.create({
     },
     shadowColor: colors.BLACK,
     shadowOpacity: 0.35,
-    shadowRadius: 5
+    shadowRadius: 5,
+    paddingVertical: 12,
   },
   caption: {
     color: colors.WHITE,
-    fontSize: 14,
+    fontSize: 22,
     fontFamily: "Roboto-Regular"
   }
 });

@@ -27,6 +27,15 @@ appConfig.googleApiKeys = {
     web: clientConfig.googleApiKeys.web,
     server: clientConfig.googleApiKeys.server,
 }
-appConfig.language = clientConfig.language
+
+const sampleDbString = fs.readFileSync('../source/functions/json/taxi-sample-db.json',
+    { encoding: 'utf8', flag: 'r' })
+const sampleDb = JSON.parse(sampleDbString)
+
+sampleDb.settings.appName = clientConfig.appName
+sampleDb.settings.code = clientConfig.currency
+sampleDb.settings.country = clientConfig.country
+
+fs.writeFileSync('../source/functions/json/taxi-sample-db.json', JSON.stringify(sampleDb, null, 2))
 
 fs.writeFileSync('../source/config.json', JSON.stringify(appConfig, null, 2))

@@ -43,5 +43,5 @@ export {
     WithdrawMoneyScreen,
     DriverIncomeScreen,
     ConvertDriver,
-    Notifications
+    Notifications,
 };

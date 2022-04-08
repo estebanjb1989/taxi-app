@@ -1,3 +1,5 @@
+import React from 'react'
+import { colors } from '../common/theme'
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import {
@@ -22,10 +24,11 @@ import {
     WithdrawMoneyScreen,
     DriverIncomeScreen,
     ConvertDriver,
-    Notifications
+    Notifications,
 } from '../screens';
 import SideMenu from '../components/SideMenu';
 import SideMenuRTL from '../components/SideMenuRTL';
+import Constants from 'expo-constants'
 
 //app stack for user end
 export const AppStack = {
@@ -45,7 +48,7 @@ export const AppStack = {
         screen: DriverTrips,
         navigationOptions: {
             headerShown: false
-        }     
+        }
     },
     Profile: {
         screen: ProfileScreen,
@@ -68,7 +71,14 @@ export const AppStack = {
     Map: {
         screen: MapScreen,
         navigationOptions: {
-            headerShown: false
+            headerShown: true,
+            title: Constants.manifest.name || '123',
+            headerStyle: {
+                backgroundColor: colors.BACKGROUND,
+            },
+            headerTitleStyle: {
+                color: colors.BUTTON_ORANGE,
+            }
         }
     },
     onlineChat: {
@@ -83,7 +93,7 @@ export const AppStack = {
             headerShown: false
         }
     },
-    MyEarning:{
+    MyEarning: {
         screen: DriverIncomeScreen,
         navigationOptions: {
             headerShown: false
@@ -145,7 +155,7 @@ export const AppStack = {
         navigationOptions: {
             headerShown: false
         }
-    }
+    },
 }
 
 //authentication stack for user before login
@@ -175,7 +185,6 @@ export const AuthStack = createStackNavigator({
 
 //drawer routes, you can add routes here for drawer or sidemenu
 const DrawerRoutes = {
-
     'Map': {
         name: 'Map',
         screen: createStackNavigator(AppStack, {
@@ -223,8 +232,8 @@ const DrawerRoutes = {
 //main navigator for user end
 export const RightRiderRootNavigator = createDrawerNavigator(
     DrawerRoutes,
-    {   
-        drawerPosition:'right',
+    {
+        drawerPosition: 'right',
         drawerWidth: 240,
         initialRouteName: 'Map',
         contentComponent: SideMenuRTL,
@@ -232,18 +241,18 @@ export const RightRiderRootNavigator = createDrawerNavigator(
 
 export const LeftRiderRootNavigator = createDrawerNavigator(
     DrawerRoutes,
-    {   
-        drawerPosition:'left',
+    {
+        drawerPosition: 'left',
         drawerWidth: 240,
         initialRouteName: 'Map',
         contentComponent: SideMenu,
-    });    
+    });
 
 
 export const RightDriverRootNavigator = createDrawerNavigator(
     DrawerRoutes,
     {
-        drawerPosition:'right',
+        drawerPosition: 'right',
         drawerWidth: 240,
         initialRouteName: 'DriverTrips',
         contentComponent: SideMenuRTL,
@@ -252,7 +261,7 @@ export const RightDriverRootNavigator = createDrawerNavigator(
 export const LeftDriverRootNavigator = createDrawerNavigator(
     DrawerRoutes,
     {
-        drawerPosition:'left',
+        drawerPosition: 'left',
         drawerWidth: 240,
         initialRouteName: 'DriverTrips',
         contentComponent: SideMenu,

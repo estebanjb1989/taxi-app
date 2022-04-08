@@ -53,14 +53,14 @@
             ".read": "auth != null",
             ".write": "root.child('users').child(auth.uid).child('usertype').val() === 'admin'",
             "$withdrawid": {
-                ".write": "newData.child('uid').val()===auth.uid",
+                ".write": "newData.child('uid').val()===auth.uid"
             }
         },
         "bookings": {
             ".read": "auth != null",
             ".write": "root.child('users').child(auth.uid).child('usertype').val() === 'admin'",
             "$bookingid": {
-                ".write": "newData.child('customer').val()===auth.uid || newData.child('driver').val()===auth.uid || root.child('bookings').child($bookingid).child('requestedDrivers').child(auth.uid).val()===true",
+                ".write": "newData.child('customer').val()===auth.uid || newData.child('driver').val()===auth.uid || root.child('bookings').child($bookingid).child('requestedDrivers').child(auth.uid).val()===true"
             },
             ".indexOn": [
                 "status",

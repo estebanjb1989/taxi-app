@@ -20,7 +20,7 @@ TaskManager.defineTask(LOCATION_TASK_NAME, ({ data: { locations }, error }) => {
   }
   if (locations.length > 0) {
     let location = locations[locations.length - 1];
-    if(location.coords){
+    if (location.coords) {
       store.dispatch({
         type: 'UPDATE_GPS_LOCATION',
         payload: {
@@ -49,15 +49,15 @@ export default function AppCommon({ children }) {
   const [sound, setSound] = useState();
   const languagedata = useSelector(state => state.languagedata);
 
-  useEffect(()=>{
-    if(languagedata.langlist){
+  useEffect(() => {
+    if (languagedata.langlist) {
       let obj = {};
       let defl = {};
       for (const value of Object.values(languagedata.langlist)) {
-         obj[value.langLocale]= value.keyValuePairs;
-         if(value.default){
-            defl = value;
-         }
+        obj[value.langLocale] = value.keyValuePairs;
+        if (value.default) {
+          defl = value;
+        }
       }
 
       i18n.translations = obj;
@@ -65,9 +65,10 @@ export default function AppCommon({ children }) {
       i18n.locale = defl.langLocale;
       moment.locale(defl.dateLocale);
       console.log(defl.langLocale)
-      dispatch(api.fetchUser());
+      api?.fetchUser &&
+        dispatch(api.fetchUser());
     }
-  },[languagedata,dispatch,api.fetchUser]);
+  }, [languagedata, dispatch, api.fetchUser]);
 
   useEffect(() => {
     if (auth.info && auth.info.profile && auth.info.profile.usertype == 'driver' && tasks && tasks.length > 0) {
@@ -76,13 +77,13 @@ export default function AppCommon({ children }) {
     if (auth.info && auth.info.profile && auth.info.profile.usertype == 'driver' && (!tasks || tasks.length == 0)) {
       stopPlaying();
     }
-  }, [auth.info,tasks]);
+  }, [auth.info, tasks]);
 
-  useEffect(()=>{
-    if(settings){
+  useEffect(() => {
+    if (settings) {
       loadSound();
     }
-  },[settings]);
+  }, [settings]);
 
   const loadSound = async () => {
     Audio.setAudioModeAsync({
@@ -95,8 +96,8 @@ export default function AppCommon({ children }) {
       playThroughEarpieceAndroid: false,
       useNativeControls: false
     });
-  
-    const { sound } = await Audio.Sound.createAsync(settings.CarHornRepeat?require('./assets/sounds/car_horn_gap.wav'):require('./assets/sounds/car_horn.wav'));
+
+    const { sound } = await Audio.Sound.createAsync(settings.CarHornRepeat ? require('./assets/sounds/car_horn_gap.wav') : require('./assets/sounds/car_horn.wav'));
     sound.setIsLoopingAsync(settings.CarHornRepeat);
     setSound(sound);
   }
@@ -106,12 +107,13 @@ export default function AppCommon({ children }) {
   }
 
   const stopPlaying = async () => {
-    if(sound){
+    if (sound) {
       sound.stopAsync();
     }
   }
 
-  useEffect(() => {;
+  useEffect(() => {
+    ;
     tokenFetched.current = false;
     locationOn.current = false;
   }, []);
@@ -163,16 +165,16 @@ export default function AppCommon({ children }) {
     ) {
       if (!locationOn.current) {
         locationOn.current = true;
-        if(Platform.OS == 'android'){
+        if (Platform.OS == 'android') {
           AsyncStorage.getItem('firstRun', (err, result) => {
-            if(result){
+            if (result) {
               StartBackgroundLocation();
-            }else{
+            } else {
               Alert.alert(
                 t('disclaimer'),
                 t('disclaimer_text'),
                 [
-                  { 
+                  {
                     text: t('ok'), onPress: () => {
                       AsyncStorage.setItem('firstRun', 'OK');
                       StartBackgroundLocation();
@@ -183,7 +185,7 @@ export default function AppCommon({ children }) {
               );
             }
           });
-        }else{
+        } else {
           StartBackgroundLocation();
         }
       }
@@ -225,7 +227,7 @@ export default function AppCommon({ children }) {
     dispatch(
       api.updatePushToken(
         auth.info,
-        token?token:'token_error',
+        token ? token : 'token_error',
         Platform.OS == 'ios' ? 'IOS' : 'ANDROID'
       )
     );
@@ -270,18 +272,18 @@ export default function AppCommon({ children }) {
   const StartBackgroundLocation = async () => {
     let permResp = await Location.requestForegroundPermissionsAsync();
     let tempWatcher = await Location.watchPositionAsync({
-        accuracy: Location.Accuracy.Balanced
+      accuracy: Location.Accuracy.Balanced
     }, location => {
-        store.dispatch({
-          type: 'UPDATE_GPS_LOCATION',
-          payload: {
-            lat: location.coords.latitude,
-            lng: location.coords.longitude
-          }
-        });
-        tempWatcher.remove();
+      store.dispatch({
+        type: 'UPDATE_GPS_LOCATION',
+        payload: {
+          lat: location.coords.latitude,
+          lng: location.coords.longitude
+        }
+      });
+      tempWatcher.remove();
     })
-    if(permResp.status == 'granted'){
+    if (permResp.status == 'granted') {
       try {
         let { status } = await Location.requestBackgroundPermissionsAsync();
         if (status === 'granted') {
@@ -321,14 +323,14 @@ export default function AppCommon({ children }) {
           });
         }
       }
-    }else{
+    } else {
       store.dispatch({
         type: 'UPDATE_GPS_LOCATION',
         payload: {
           lat: null,
           lng: null
         }
-      }); 
+      });
     }
   }
 

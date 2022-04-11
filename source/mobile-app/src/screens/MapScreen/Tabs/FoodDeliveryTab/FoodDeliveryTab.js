@@ -26,12 +26,13 @@ import { LoadingModal } from 'components/LoadingModal';
 import BookingModal from 'components/BookingModal';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Footer from '../components/Footer'
-import FoodSelection from './FoodSelection';
+import VenueSelection from './VenueSelection';
+import FoodCategorySelection from './FoodCategorySelection';
 
 const hasNotch = Platform.OS === 'ios' && !Platform.isPad && !Platform.isTVOS && ((height === 780 || width === 780) || (height === 812 || width === 812) || (height === 844 || width === 844) || (height === 896 || width === 896) || (height === 926 || width === 926))
 
-export default function MapScreen(props) {
-    const { api, appcat } = useContext(FirebaseContext);
+export default function FoodDeliveryTab (props) {
+    const { api, appcat, venuesRef, productsRef } = useContext(FirebaseContext);
     const {
         fetchAddressfromCoords,
         fetchDrivers,
@@ -47,8 +48,9 @@ export default function MapScreen(props) {
         clearEstimate,
         addBooking,
         clearBooking,
-        clearTripPoints
+        clearTripPoints,
     } = api;
+
     const dispatch = useDispatch();
     const { t } = i18n;
     const isRTL = i18n.locale.indexOf('he') === 0 || i18n.locale.indexOf('ar') === 0;
@@ -73,6 +75,11 @@ export default function MapScreen(props) {
         dateModalOpen: false,
         dateMode: 'date'
     });
+    const [venues, setVenues] = useState([])
+    const [products, setProducts] = useState([])
+    const [categories, setCategories] = useState([])
+    const [selectedVenue, setSelectedVenue] = useState(null)
+    const [selectedCategory, setSelectedCategory] = useState(null)
     const [loadingModal, setLoadingModal] = useState(false);
     const [region, setRegion] = useState(null);
     const pageActive = useRef(false);
@@ -205,6 +212,9 @@ export default function MapScreen(props) {
     }, [bookingdata.booking, bookingdata.error, bookingdata.error.flag]);
 
     useEffect(() => {
+        venuesRef.get().then(data => setVenues(
+            data.docs.map(item => item.data())
+        ))
         setInterval(() => {
             if (pageActive.current) {
                 dispatch(fetchDrivers());
@@ -666,7 +676,38 @@ export default function MapScreen(props) {
             resetCars();
         }
     };
-    return <FoodSelection />
+
+    // WIP
+    useEffect(() => {
+        if (!selectedVenue) return
+        productsRef.get().then(data => setProducts(
+            data.docs.map(item => item.data())
+        ))
+    }, [selectedVenue])
+
+    useEffect(() => {
+        if (!products) {
+            return null
+        }
+
+        products.map(item => {
+            console.log(item.related_categories?.docs.map(category => {
+                return category.data()
+            }))
+        })
+    }, [products])
+    //
+
+    if (!selectedVenue)
+        return <VenueSelection venues={venues} onChangeVenue={(item) => {
+            setSelectedVenue(item)
+        }} />
+
+    if (!selectedCategory)
+        return <FoodCategorySelection categories={categories} />
+
+    return null
+
     return (
         <View style={styles.container}>
             <NavigationEvents
@@ -845,7 +886,7 @@ export default function MapScreen(props) {
                 </View>
                 : null}
 
-            <LoadingModal loadingModal={loadingModal} />
+
             {appcat == 'delivery' ?
                 <OptionModal
                     settings={settings}

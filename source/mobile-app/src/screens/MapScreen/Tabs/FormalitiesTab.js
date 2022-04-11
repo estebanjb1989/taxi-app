@@ -844,7 +844,6 @@ export default function MapScreen(props) {
                 </View>
                 : null}
 
-            <LoadingModal loadingModal={loadingModal} />
             {appcat == 'delivery' ?
                 <OptionModal
                     settings={settings}

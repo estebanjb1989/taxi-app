@@ -21,12 +21,14 @@ import i18n from 'i18n-js';
 import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import { FirebaseContext } from 'common/src';
+import { useNavigation } from '@react-navigation/native'
 
 export default function SideMenu(props){
 
     const { api, appcat } = useContext(FirebaseContext);
     const { signOut, updateProfile, clearTripPoints } = api;
 
+    const navigation = useNavigation()
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
     const settings = useSelector(state => state.settingsdata.settings);
@@ -68,10 +70,9 @@ export default function SideMenu(props){
 
     //navigation to screens from side menu
     const navigateToScreen = (route) => () => {
-        const navigateAction = NavigationActions.navigate({
-            routeName: route
-        });
-        props.navigation.dispatch(navigateAction);
+        navigation.navigate('Taxi', {
+            screen: route,
+        })
     }
     
     //sign out 

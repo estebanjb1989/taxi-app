@@ -164,6 +164,7 @@ const FirebaseProvider = ({ config, appcat, children }) => {
             mobileAuthCredential: (verificationId, code) => app.auth.PhoneAuthProvider.credential(verificationId, code),
             venuesRef: app.firestore().collection("venues"),
             productsRef: app.firestore().collection("products"),
+            productCategoriesRef: app.firestore().collection("productCategories"),
             usersRef: app.database().ref("users"),
             bookingRef: app.database().ref("bookings"),
             cancelreasonRef: app.database().ref("cancel_reason"),

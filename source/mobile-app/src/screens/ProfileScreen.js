@@ -28,8 +28,10 @@ import * as TaskManager from 'expo-task-manager';
 import RNPickerSelect from 'react-native-picker-select';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment/min/moment-with-locales';
+import { useNavigation } from '@react-navigation/native'
 
 export default function ProfileScreen(props) {
+    const navigation = useNavigation()
     const { t } = i18n;
     const [isRTL,setIsRTL] = useState(); 
     const { api } = useContext(FirebaseContext);
@@ -151,7 +153,7 @@ export default function ProfileScreen(props) {
 
 
     const editProfile = () => {
-        props.navigation.push('editUser');
+        navigation.navigate('editUser');
     }
 
     const StopBackgroundLocation = async () => {

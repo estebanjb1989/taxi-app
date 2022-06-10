@@ -21,6 +21,15 @@ import DriverIncomeScreen from './DriverIncomeScreen';
 import ConvertDriver from './ConvertDriver';
 import Notifications from './Notifications';
 
+import FoodDeliveryScreen from './FoodDeliveryScreen';
+import FoodCategoryScreen from './FoodCategoryScreen';
+import FoodProductScreen from './FoodProductScreen';
+import FoodVenueScreen from './FoodVenueScreen';
+import FoodCartScreen from './FoodCartScreen';
+import HomeScreen from './HomeScreen';
+
+import FansFeedScreen from './FansFeedScreen';
+
 export {
     MapScreen,
     BookedCabScreen,
@@ -44,4 +53,13 @@ export {
     DriverIncomeScreen,
     ConvertDriver,
     Notifications,
+
+    FoodDeliveryScreen,
+    FoodCategoryScreen,
+    FoodProductScreen,
+    FoodVenueScreen,
+    FoodCartScreen,
+    HomeScreen,
+
+    FansFeedScreen,
 };

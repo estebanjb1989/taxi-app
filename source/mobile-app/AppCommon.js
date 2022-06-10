@@ -50,6 +50,7 @@ export default function AppCommon({ children }) {
   const languagedata = useSelector(state => state.languagedata);
 
   useEffect(() => {
+    if (!api?.fetchUser) return
     if (languagedata.langlist) {
       let obj = {};
       let defl = {};
@@ -64,11 +65,11 @@ export default function AppCommon({ children }) {
       i18n.fallbacks = true;
       i18n.locale = defl.langLocale;
       moment.locale(defl.dateLocale);
-      console.log(defl.langLocale)
+      // console.log(defl.langLocale)
       api?.fetchUser &&
         dispatch(api.fetchUser());
     }
-  }, [languagedata, dispatch, api.fetchUser]);
+  }, [api, languagedata, dispatch, api.fetchUser]);
 
   useEffect(() => {
     if (auth.info && auth.info.profile && auth.info.profile.usertype == 'driver' && tasks && tasks.length > 0) {

@@ -22,6 +22,7 @@ import { chatreducer as chatdata } from '../reducers/chatreducer';
 import { withdrawreducer as withdrawdata } from '../reducers/withdrawreducer';
 import { gpsreducer as gpsdata } from '../reducers/gpsreducer';
 import { languagereducer as languagedata} from '../reducers/languagereducer';
+import { deliveryreducer as deliverydata} from '../reducers/deliveryreducer';
 
 const reducers = combineReducers({
   auth,
@@ -43,7 +44,8 @@ const reducers = combineReducers({
   chatdata,
   withdrawdata,
   gpsdata,
-  languagedata
+  languagedata,
+  deliverydata,
 });
 
 let middleware = [thunk];

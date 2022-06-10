@@ -21,6 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../common/theme';
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import RNPickerSelect from 'react-native-picker-select';
+import { Button } from '../components'
 
 import i18n from 'i18n-js';
 
@@ -270,10 +271,9 @@ export default function EmailLoginScreen(props) {
                     </View>
                     : null}
                 {state.customStyleIndex == 0 ?
-                    <MaterialButtonDark
-                        onPress={onAction}
-                        style={styles.materialButtonDark}
-                    >{t('login_button')}</MaterialButtonDark>
+                    <Button
+                        btnClick={onAction}
+                    >{t('login_button')}</Button>
                     : null}
                 {state.customStyleIndex == 0 ?
                     <View style={styles.linkBar}>
@@ -323,7 +323,7 @@ export default function EmailLoginScreen(props) {
                             placeholder={t('otp_here')}
                             onChangeText={(value) => setState({ ...state, verificationCode: value })}
                             value={state.verificationCode}
-                            ditable={!!state.verificationId}
+                            editable={!!state.verificationId}
                             keyboardType="phone-pad"
                             secureTextEntry={true}
                         />
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     imagebg: {
-        backgroundColor: colors.BRANDING,
+        backgroundColor: colors.BACKGROUND,
         position: 'absolute',
         left: 0,
         top: 0,
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
         borderRadius: 9,
     },
     textInput: {
-        color: colors.BACKGROUND,
+
         fontSize: 16,
         fontFamily: "Roboto-Regular",
         padding: 12,

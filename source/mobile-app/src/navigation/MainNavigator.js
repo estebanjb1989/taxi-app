@@ -1,7 +1,10 @@
 import React from 'react'
 import { colors } from '../common/theme'
 import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator } from 'react-navigation-drawer';
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
     DriverRating,
     ProfileScreen,
@@ -25,49 +28,68 @@ import {
     DriverIncomeScreen,
     ConvertDriver,
     Notifications,
+    FoodDeliveryScreen,
+    FoodProductScreen,
+    FoodVenueScreen,
+    FoodCartScreen,
+    HomeScreen,
 } from '../screens';
 import SideMenu from '../components/SideMenu';
 import SideMenuRTL from '../components/SideMenuRTL';
 import Constants from 'expo-constants'
+import FoodCategoryScreen from '../screens/FoodCategoryScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import FansFeedScreen from 'screens/FansFeedScreen'
+import FansProfileScreen from 'screens/FansProfileScreen'
+
+const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
+
 
 //app stack for user end
 export const AppStack = {
     DriverRating: {
         screen: DriverRating,
         navigationOptions: {
-            headerShown: false
+            headerShown: false,
         }
     },
+
     RideList: {
         screen: RideListPage,
         navigationOptions: {
             headerShown: false,
         }
     },
+
     DriverTrips: {
         screen: DriverTrips,
         navigationOptions: {
             headerShown: false
         }
     },
+
     Profile: {
         screen: ProfileScreen,
         navigationOptions: {
             headerShown: false
         }
     },
+
     PaymentDetails: {
         screen: PaymentDetails,
         navigationOptions: {
             headerShown: false
         }
     },
+
     About: {
         screen: AboutPage,
         navigationOptions: {
             headerShown: false
         }
     },
+
     Map: {
         screen: MapScreen,
         navigationOptions: {
@@ -81,24 +103,28 @@ export const AppStack = {
             }
         }
     },
+
     onlineChat: {
         screen: OnlineChat,
         navigationOptions: {
             headerShown: false
         }
     },
+
     BookedCab: {
         screen: BookedCabScreen,
         navigationOptions: {
             headerShown: false
         }
     },
+
     MyEarning: {
         screen: DriverIncomeScreen,
         navigationOptions: {
             headerShown: false
         }
     },
+
     RideDetails: {
         screen: RideDetails,
         navigationOptions: {
@@ -117,8 +143,8 @@ export const AppStack = {
         navigationOptions: {
             headerShown: false
         }
-
     },
+
     wallet: {
         screen: WalletDetails,
         navigationOptions: {
@@ -126,41 +152,87 @@ export const AppStack = {
         }
 
     },
+
     addMoney: {
         screen: AddMoneyScreen,
         navigationOptions: {
             headerShown: false
         }
     },
+
     withdrawMoney: {
         screen: WithdrawMoneyScreen,
         navigationOptions: {
             headerShown: false
         }
     },
+
     paymentMethod: {
         screen: SelectGatewayPage,
         navigationOptions: {
             headerShown: false
         }
     },
+
     Convert: {
         screen: ConvertDriver,
         navigationOptions: {
             headerShown: false
         }
     },
+
     Notifications: {
         screen: Notifications,
         navigationOptions: {
             headerShown: false
         }
     },
+
+    FoodDelivery: {
+        screen: FoodDeliveryScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+
+    FoodVenue: {
+        screen: FoodVenueScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+
+    FoodCategory: {
+        screen: FoodCategoryScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+
+    FoodProduct: {
+        screen: FoodProductScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+
+    FoodCart: {
+        screen: FoodCartScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+
+    Home: {
+        screen: HomeScreen,
+        navigationOptions: {
+            headerShown: false
+        }
+    }
 }
 
 //authentication stack for user before login
 export const AuthStack = createStackNavigator({
-
     Reg: {
         screen: RegistrationPage,
         navigationOptions: {
@@ -183,86 +255,124 @@ export const AuthStack = createStackNavigator({
     initialRouteName: 'Intro',
 });
 
-//drawer routes, you can add routes here for drawer or sidemenu
-const DrawerRoutes = {
-    'Map': {
-        name: 'Map',
-        screen: createStackNavigator(AppStack, {
-            initialRouteName: 'Map',
-            navigationOptions: {
-                headerShown: false
-            }
-        })
-    },
-    'RideList': {
-        name: 'RideList',
-        screen: createStackNavigator(AppStack, { initialRouteName: 'RideList', headerMode: 'none' })
-    },
-    'DriverTrips': {
-        name: 'DriverTrips',
-        screen: createStackNavigator(AppStack, { initialRouteName: 'DriverTrips', headerMode: 'none' })
-    },
-    'Profile': {
-        name: 'Profile',
-        screen: createStackNavigator(AppStack, { initialRouteName: 'Profile', headerMode: 'none' })
-    },
-    'About': {
-        name: 'About',
-        screen: createStackNavigator(AppStack, { initialRouteName: 'About', headerMode: 'none' })
-    },
-    'wallet': {
-        name: 'wallet',
-        screen: createStackNavigator(AppStack, { initialRouteName: 'wallet', headerMode: 'none' })
-    },
-    'MyEarning': {
-        name: 'MyEarning',
-        screen: createStackNavigator(AppStack, { initialRouteName: 'MyEarning', headerMode: 'none' })
-    },
-    'Convert': {
-        name: 'Convert',
-        screen: createStackNavigator(AppStack, { initialRouteName: 'Convert', headerMode: 'none' })
-    },
-    'Notifications': {
-        name: 'Notifications',
-        screen: createStackNavigator(AppStack, { initialRouteName: 'Notifications', headerMode: 'none' })
-    },
+const Stack = createNativeStackNavigator();
 
-};
+const FoodDeliveryNavigator = () => {
+    return (
+        <Stack.Navigator screenOptions={{
+            headerShown: false,
+        }}>
+            <Stack.Screen name="FoodDelivery" component={FoodDeliveryScreen} />
+            <Stack.Screen name="FoodCategory" component={FoodCategoryScreen} />
+            <Stack.Screen name="FoodProduct" component={FoodProductScreen} />
+            <Stack.Screen name="FoodCart" component={FoodCartScreen} />
+        </Stack.Navigator>
+    )
+}
 
-//main navigator for user end
-export const RightRiderRootNavigator = createDrawerNavigator(
-    DrawerRoutes,
-    {
-        drawerPosition: 'right',
-        drawerWidth: 240,
-        initialRouteName: 'Map',
-        contentComponent: SideMenuRTL,
-    });
+const FansFeedNavigator = () => {
+    return (
+        <Stack.Navigator screenOptions={{
+            headerShown: false,
+        }}>
+            <Stack.Screen name="FansFeedScreen" component={FansFeedScreen} />
+        </Stack.Navigator>
+    )
+}
 
-export const LeftRiderRootNavigator = createDrawerNavigator(
-    DrawerRoutes,
-    {
-        drawerPosition: 'left',
-        drawerWidth: 240,
-        initialRouteName: 'Map',
-        contentComponent: SideMenu,
-    });
+const FansProfileNavigator = () => {
+    return (
+        <Stack.Navigator screenOptions={{
+            headerShown: false,
+        }}>
+            <Stack.Screen name="FansProfileScreen" component={FansProfileScreen} />
+        </Stack.Navigator>
+    )
+}
+
+const DrawerNavigator = () => {
+    return (
+        <Drawer.Navigator
+            initialRouteName="Map"
+            drawerContent={(props) => <SideMenu {...props} />}
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+            <Drawer.Screen name="Map" component={MapScreen} />
+            <Drawer.Screen name="RideList" component={RideListPage} />
+            <Drawer.Screen name="DriverTips" component={DriverTrips} />
+            <Drawer.Screen name="Profile" component={ProfileScreen} />
+            <Drawer.Screen name="About" component={AboutPage} />
+            <Drawer.Screen name="wallet" component={WalletDetails} />
+            <Drawer.Screen name="MyEarning" component={DriverIncomeScreen} />
+            <Drawer.Screen name="Convert" component={ConvertDriver} />
+            <Drawer.Screen name="Notifications" component={Notifications} />
+            <Drawer.Screen name="editUser" component={EditProfilePage} />
+        </Drawer.Navigator>
+    )
+}
 
 
-export const RightDriverRootNavigator = createDrawerNavigator(
-    DrawerRoutes,
-    {
-        drawerPosition: 'right',
-        drawerWidth: 240,
-        initialRouteName: 'DriverTrips',
-        contentComponent: SideMenuRTL,
-    });
+export const TabsNavigator = () => {
+    return (
+        <NavigationContainer>
+            <Tab.Navigator
+                screenOptions={({ route }) => ({
+                    tabBarStyle: {
+                        backgroundColor: colors.BACKGROUND,
+                        height: 100,
+                    },
+                    tabBarLabel: () => null,
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let iconName = "circle";
 
-export const LeftDriverRootNavigator = createDrawerNavigator(
-    DrawerRoutes,
-    {
-        drawerPosition: 'left',
-        drawerWidth: 240,
-        initialRouteName: 'DriverTrips',
-        contentComponent: SideMenu,
-    });
+                        if (route.name === 'Delivery') {
+                            iconName = focused
+                                ? 'motorcycle'
+                                : 'motorcycle';
+                        }
+                        if (route.name === 'Taxi') {
+                            iconName = focused
+                                ? 'taxi'
+                                : 'taxi';
+
+                        }
+                        return <FontAwesome name={iconName} size={size} color={color} />;
+                    },
+                    tabBarActiveTintColor: colors.BRANDING,
+                    tabBarInactiveTintColor: 'gray',
+                })}
+            >
+                <Tab.Screen
+                    name="Delivery"
+                    component={FoodDeliveryNavigator}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Tab.Screen
+                    name="Taxi"
+                    component={DrawerNavigator}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Tab.Screen
+                    name="FansFeed"
+                    component={FansFeedNavigator}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <Tab.Screen
+                    name="Fans"
+                    component={FansProfileNavigator}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+            </Tab.Navigator>
+        </NavigationContainer>
+    );
+}

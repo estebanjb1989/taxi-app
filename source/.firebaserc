@@ -1,20 +1,5 @@
 {
-  "projects": {
-    "default": "taxiappdev-86986"
-  },
-  "targets": {
-    "taxiappdev-86986": {
-      "hosting": {
-        "cms": [
-          "cmsdev-dfc9f"
-        ],
-        "pdv": [
-          "pdvdev"
-        ],
-        "docdev": [
-          "docdev-cf675"
-        ]
-      }
+        "projects": {
+            "default": "taxiappdev-86986"
+        }
     }
-  }
-}

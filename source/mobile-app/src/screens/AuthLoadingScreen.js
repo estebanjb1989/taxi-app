@@ -52,7 +52,7 @@ export default function AuthLoadingScreen(props) {
             dispatch(api.fetchCancelReasons());
             dispatch(api.fetchPaymentMethods());
             dispatch(api.fetchPromos());
-            isRTL ? props.navigation.navigate('RightRiderRoot'): props.navigation.navigate('LeftRiderRoot');
+            isRTL ? props.navigation.navigate('TabsNavigator'): props.navigation.navigate('TabsNavigator');
           } else if (role === 'driver') {
             dispatch(api.monitorProfileChanges());
             dispatch(api.fetchBookings(auth.info.uid, role));

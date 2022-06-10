@@ -10,7 +10,7 @@ import {
     Platform,
     Alert,
 } from "react-native";
-import MaterialButtonDark from "../components/MaterialButtonDark";
+import { Button } from '../components'
 import * as Facebook from 'expo-facebook';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Crypto from "expo-crypto";
@@ -191,15 +191,13 @@ export default function IntroScreen(props) {
                     />
                     : null}
             </View>
-            <MaterialButtonDark
-                onPress={onPressLoginEmail}
-                style={styles.materialButtonDark}
-            >{t('login')}</MaterialButtonDark>
+            <Button
+                btnClick={onPressLoginEmail}
+            >{t('login')}</Button>
             {settings && settings.MobileLoginEnabled ?
-                <MaterialButtonDark
-                    onPress={onPressRegister}
-                    style={styles.materialButtonDark2}
-                >{t('register')}</MaterialButtonDark>
+                <Button
+                    btnClick={onPressRegister}
+                >{t('register')}</Button>
                 : null}
             {(Platform.OS == 'ios' && settings && settings.AppleLoginEnabled) || (settings && settings.FacebookLoginEnabled) ?
                 <View style={styles.seperator}>
@@ -247,7 +245,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     imagebg: {
-        backgroundColor: colors.BRANDING,
+        backgroundColor: colors.BACKGROUND,
         position: 'absolute',
         left: 0,
         top: 0,
@@ -262,11 +260,9 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width
     },
     materialButtonDark: {
-        
         marginTop: 20,
         marginLeft: 35,
         marginRight: 35,
-        backgroundColor: colors.BUTTON,
     },
     materialButtonDark2: {
         marginTop: 14,

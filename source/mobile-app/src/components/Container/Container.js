@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { ImageBackground, TouchableOpacity, View } from "react-native";
+import { ImageBackground, TouchableOpacity, View, ScrollView } from "react-native";
 import styles from "./styles";
 
 const Container = ({
@@ -32,14 +32,15 @@ const Container = ({
     roundBorders,
     onLayout,
     wrap,
+    scrollable,
 }) => {
     const ref = useRef(null);
 
     const ContainerComponent = onPress
         ? TouchableOpacity
-            : background
-            ? ImageBackground
-            : View;
+        : background ? ImageBackground
+            : scrollable ? ScrollView
+                : View;
 
     return (
         <ContainerComponent

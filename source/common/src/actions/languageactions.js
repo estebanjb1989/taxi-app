@@ -5,6 +5,8 @@ import {
     EDIT_LANGUAGE
 } from "../store/types";
 
+import { onValue } from "firebase/database"
+
 export const fetchLanguages = () => (dispatch) => (firebase) => {
 
     const {
@@ -15,7 +17,7 @@ export const fetchLanguages = () => (dispatch) => (firebase) => {
         type: FETCH_LANGUAGE,
         payload: null
     });
-    languagesRef.on("value", snapshot => {
+    onValue(languagesRef, snapshot => {
         if (snapshot.val()) {
             const data = snapshot.val();
             let defLang = null;

@@ -1,3 +1,9 @@
+
+import { 
+    fetchSignInMethodsForEmail,
+    createUserWithEmailAndPassword
+} from 'firebase/auth';
+
 import {
   FETCH_USER,
   FETCH_USER_SUCCESS,
@@ -114,6 +120,9 @@ export const fetchUser = () => (dispatch) => (firebase) => {
         })
           .then(response => response.json())
           .then((res) => {
+            console.log({
+              res
+            })
             if (res.success) {
               settingsRef.once("value", settingdata => {
                 let settings = settingdata.val();
@@ -210,47 +219,30 @@ export const validateReferer = (referralId) => async (firebase) => {
   return json;
 };
 
-export const checkUserExists = (regData) => async (firebase) => {
-  const {
-    config
-  } = firebase;
-  const response = await fetch(`https://${config.projectId}.web.app/check_user_exists`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      email: regData.email,
-      mobile: regData.mobile
-    })
-  })
-  const json = await response.json();
-  return json;
+export const checkUserExists = (regData) => async (firebase) => { 
+  const signInMethods = await fetchSignInMethodsForEmail(firebase.auth, regData.email)
+  if (signInMethods?.length) {
+    return true;
+  }
+  return false;
 };
 
 export const emailSignUp = (regData) => async (firebase) => {
-
   const {
-    config,
     driverDocsRef
   } = firebase;
-
-  let url = `https://${config.projectId}.web.app/user_signup`;
+  
   let createDate = new Date();
   regData.createdAt = createDate.toISOString();
-  if (regData.usertype == 'driver') {
+
+  if (regData.usertype === 'driver') {
     let timestamp = createDate.getTime();
     await driverDocsRef(timestamp).put(regData.licenseImage);
     regData.licenseImage = await driverDocsRef(timestamp).getDownloadURL();
   }
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ regData: regData })
-  })
-  return await response.json();
+  
+  const created = await createUserWithEmailAndPassword(firebase.auth, regData.email, regData.password);
+  return created
 };
 
 export const requestPhoneOtpDevice = (phoneNumber, appVerifier) => (dispatch) => async (firebase) => {

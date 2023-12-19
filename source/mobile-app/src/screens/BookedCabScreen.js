@@ -23,7 +23,7 @@ import { colors } from '../common/theme';
 var { width, height } = Dimensions.get('window');
 import i18n from 'i18n-js';
 import { useSelector, useDispatch } from 'react-redux';
-import { NavigationEvents } from 'react-navigation';
+//import { NavigationEvents } from 'react-navigation';
 import Polyline from '@mapbox/polyline';
 import getDirections from 'react-native-google-maps-directions';
 import carImageIcon from '../../assets/images/track_Car.png';
@@ -714,7 +714,7 @@ export default function BookedCabScreen(props) {
     const rCom ={ icon: 'md-menu', type: 'ionicon', color: colors.WHITE, size: 30, component: TouchableWithoutFeedback, onPress: () => { props.navigation.toggleDrawer(); } }
     return (
         <View style={styles.mainContainer}>
-            <NavigationEvents
+            {/* <NavigationEvents
                 onWillBlur={payload => {
                     pageActive.current = false;
                     if (role == 'rider') {
@@ -733,7 +733,7 @@ export default function BookedCabScreen(props) {
                 onDidFocus={payload => {
                     pageActive.current = true;
                 }}
-            />
+            /> */}
             <Header
                 backgroundColor={colors.HEADER}
                 centerComponent={<Text style={styles.headerTitleStyle}>{t('booked_cab_title')}</Text>}

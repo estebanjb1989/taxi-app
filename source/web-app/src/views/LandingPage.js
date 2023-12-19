@@ -31,6 +31,7 @@ import AlertDialog from '../components/AlertDialog';
 import { FirebaseContext } from 'common';
 import {colors} from '../components/Theme/WebTheme';
 import { useTranslation } from "react-i18next";
+import backgroundAsset from "../assets/img/background.jpg"
 
 const dashboardRoutes = [];
 
@@ -441,7 +442,7 @@ export default function LandingPage(props) {
         }}
         {...rest}
       />
-      <Parallax filter image={require("assets/img/background.jpg").default}>
+      <Parallax filter image={backgroundAsset}>
         {(cartypes && !role) || (cartypes && (role === 'rider' || role === 'admin'))?
           <div className={classes.container} style={{direction:isRTL === 'rtl'?'rtl':'ltr'}}>
             <GridContainer spacing={2}>

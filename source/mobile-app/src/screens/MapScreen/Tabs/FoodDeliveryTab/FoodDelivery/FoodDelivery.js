@@ -9,7 +9,7 @@ import {
   Text
 } from 'react-native'
 import { Container } from 'components'
-import { SafeAreaView } from 'react-navigation'
+import { SafeAreaView } from 'react-native'
 
 export default function FoodDelivery(props) {
   const layout = useWindowDimensions()

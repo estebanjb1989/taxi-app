@@ -35,7 +35,7 @@ TaskManager.defineTask(LOCATION_TASK_NAME, ({ data: { locations }, error }) => {
 export default function AppCommon({ children }) {
 
   const { t } = i18n;
-  const { api } = useContext(FirebaseContext);
+  const { api } = useContext(FirebaseContext) || {};
   const dispatch = useDispatch();
   const gps = useSelector(state => state.gpsdata);
   const activeBooking = useSelector(state => state.bookinglistdata.tracked);
@@ -65,11 +65,15 @@ export default function AppCommon({ children }) {
       i18n.locale = defl.langLocale;
       moment.locale(defl.dateLocale);
       console.log(defl.langLocale)
-      dispatch(api.fetchUser());
+      if (api) {
+        dispatch(api.fetchUser());
+      }
+      
     }
-  },[languagedata,dispatch,api.fetchUser]);
+  },[languagedata,dispatch,api?.fetchUser]);
 
   useEffect(() => {
+    if (!auth?.info) return; 
     if (auth.info && auth.info.profile && auth.info.profile.usertype == 'driver' && tasks && tasks.length > 0) {
       playSound();
     }

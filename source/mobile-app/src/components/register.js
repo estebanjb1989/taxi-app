@@ -35,10 +35,10 @@ export default function Registration(props) {
     } = api;
     const [state, setState] = useState({
         usertype: 'rider',
-        firstName: '',
-        lastName: '',
-        email: '',
-        mobile: '',
+        firstName: '123',
+        lastName: '123',
+        email: '123@asd.com',
+        mobile: '11112222',
         referralId: '',
         vehicleNumber: '',
         vehicleMake: '',
@@ -49,14 +49,14 @@ export default function Registration(props) {
         bankName: '',
         licenseImage: null,
         other_info: '',
-        password: ''
+        password: 'asd123'
     });
 
     const [role, setRole] = useState(0);
     const [capturedImage, setCapturedImage] = useState(null);
-    const [confirmpassword, setConfirmPassword] = useState('');
+    const [confirmpassword, setConfirmPassword] = useState('asd123');
     const [countryCode, setCountryCode] = useState();
-    const [mobileWithoutCountry, setMobileWithoutCountry] = useState('');
+    const [mobileWithoutCountry, setMobileWithoutCountry] = useState('11112222');
     const settings = useSelector(state => state.settingsdata.settings);
     const actionSheetRef = useRef(null);
 

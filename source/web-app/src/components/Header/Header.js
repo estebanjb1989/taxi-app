@@ -17,6 +17,8 @@ import {
 } from '@material-ui/core';
 import { useSelector } from "react-redux";
 import moment from 'moment/min/moment-with-locales';
+import blackLogo from "../../assets/img/logo138x75black.png"
+import whiteLogo from "../../assets/img/logo138x75white.png";
 
 const useStyles = makeStyles(styles);
 
@@ -92,8 +94,8 @@ export default function Header(props) {
   const brandComponent = <Button
     href="/"
     className={classes.title}>
-    {secondLogo ? <img src={require("../../assets/img/logo138x75black.png").default} alt="blackLogo" /> :
-      <img src={require("../../assets/img/logo138x75white.png").default} alt="whiteLogo" />
+    {secondLogo ? <img src={blackLogo} alt="blackLogo" /> :
+      <img src={whiteLogo} alt="whiteLogo" />
     }
   </Button>;
   return (

@@ -376,8 +376,8 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height + (Platform.OS == 'android'? 40 :0),
     },
     topBar: {
-        marginTop: 0,
-        marginLeft: 0,
+        marginTop: 12,
+        marginLeft: 12,
         marginRight: 0,
         height: (Dimensions.get('window').height * 0.52) + (Platform.OS == 'android'? 40 :0),
     },

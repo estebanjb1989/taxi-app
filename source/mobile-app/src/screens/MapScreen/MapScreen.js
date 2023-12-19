@@ -7,7 +7,7 @@ import {
     View,
 } from 'react-native'
 import { TabView, SceneMap } from 'react-native-tab-view'
-import { SafeAreaView } from 'react-navigation'
+//import { SafeAreaView } from 'react-navigation'
 import TaxiScreen from './Tabs/TaxiTab'
 import DeliveryScreen from './Tabs/DeliveryTab'
 import FoodDeliveryScreen from './Tabs/FoodDeliveryTab'
@@ -64,7 +64,7 @@ export default function MapScreen(props) {
           </View>
         );
       };
-
+return null
     return (
         <SafeAreaView style={{
             flex: 1,

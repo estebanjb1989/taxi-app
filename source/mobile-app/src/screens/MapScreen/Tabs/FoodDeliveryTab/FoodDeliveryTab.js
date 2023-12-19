@@ -19,14 +19,14 @@ var { height, width } = Dimensions.get('window');
 import i18n from 'i18n-js';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useSelector, useDispatch } from 'react-redux';
-import { NavigationEvents } from 'react-navigation';
+//import { NavigationEvents } from 'react-navigation';
 import { FirebaseContext } from 'common/src';
 import { OptionModal } from 'components/OptionModal';
 import { LoadingModal } from 'components/LoadingModal';
 import BookingModal from 'components/BookingModal';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Footer from '../components/Footer'
-import FoodSelection from './FoodSelection';
+//import FoodSelection from './FoodSelection';
 
 const hasNotch = Platform.OS === 'ios' && !Platform.isPad && !Platform.isTVOS && ((height === 780 || width === 780) || (height === 812 || width === 812) || (height === 844 || width === 844) || (height === 896 || width === 896) || (height === 926 || width === 926))
 
@@ -666,17 +666,16 @@ export default function MapScreen(props) {
             resetCars();
         }
     };
-    return <FoodSelection />
     return (
         <View style={styles.container}>
-            <NavigationEvents
+            {/* <NavigationEvents
                 onDidFocus={payload => {
                     pageActive.current = true;
                 }}
                 onWillBlur={payload => {
                     pageActive.current = false;
                 }}
-            />
+            /> */}
             <StatusBar hidden={true} />
             <View style={styles.mapcontainer}>
                 {region ?

@@ -3,12 +3,13 @@ import {
     StyleSheet,
     View,
     Image,
-    ImageBackground,
+    SafeAreaView,
     Text,
     Dimensions,
     Linking,
     Platform,
     Alert,
+    ImageBackground
 } from "react-native";
 import MaterialButtonDark from "../components/MaterialButtonDark";
 import * as Facebook from 'expo-facebook';
@@ -24,6 +25,8 @@ import i18n from 'i18n-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment/min/moment-with-locales';
+import introAsset from "../../assets/images/intro.png"
+import { useNavigation } from "@react-navigation/native"
 
 export default function IntroScreen(props) {
 
@@ -148,97 +151,103 @@ export default function IntroScreen(props) {
     const openTerms = async () => {
         Linking.openURL(settings.CompanyTerms).catch(err => console.error("Couldn't load page", err));
     }
-
-
+    
     return (
-        <View
+        <SafeAreaView
             style={styles.imagebg}
         >
-            <View style={styles.topSpace}></View>
-            <View style={[styles.headLanuage,[isRTL?{left:10}:{right: 10}]]}>
-                <Text style={{ color: colors.BLACK, marginLeft: 3 }}>Lang:</Text>
-                {langSelection && languagedata && languagedata.langlist ?
-                    <RNPickerSelect
-                        placeholder={{}}
-                        value={langSelection}
-                        useNativeAndroidPickerStyle={true}
-                        style={{
-                            inputIOS: styles.pickerStyle,
-                            inputAndroid: styles.pickerStyle,
-                            placeholder: {
-                                color: 'white'
-                            },
+            <ImageBackground
+                source={introAsset}
+                resizeMode="cover"
+                style={{
+                    flex: 1
+                }}
+            >
+                <View style={styles.topSpace}></View>
+                <View style={[styles.headLanuage,[isRTL?{left:10}:{right: 10}]]}>
+                    {/* {langSelection && languagedata && languagedata.langlist ?
+                        <RNPickerSelect
+                            placeholder={{}}
+                            value={langSelection}
+                            useNativeAndroidPickerStyle={true}
+                            style={{
+                                inputIOS: styles.pickerStyle,
+                                inputAndroid: styles.pickerStyle,
+                                placeholder: {
+                                    color: 'white'
+                                },
 
-                        }}
-                        onValueChange={
-                            (text) => {
-                                let defl = null;
-                                for (const value of Object.values(languagedata.langlist)) {
-                                   if(value.langLocale == text){
-                                      defl = value;
-                                   }
+                            }}
+                            onValueChange={
+                                (text) => {
+                                    let defl = null;
+                                    for (const value of Object.values(languagedata.langlist)) {
+                                    if(value.langLocale == text){
+                                        defl = value;
+                                    }
+                                    }
+                                    setLangSelection(text);
+                                    i18n.locale = text;
+                                    moment.locale(defl.dateLocale);
+                                    setIsRTL(text == 'he' || text == 'ar')
+                                    AsyncStorage.setItem('lang', JSON.stringify({langLocale:text,dateLocale:defl.dateLocale }));
                                 }
-                                setLangSelection(text);
-                                i18n.locale = text;
-                                moment.locale(defl.dateLocale);
-                                setIsRTL(text == 'he' || text == 'ar')
-                                AsyncStorage.setItem('lang', JSON.stringify({langLocale:text,dateLocale:defl.dateLocale }));
                             }
-                        }
-                        label={"Language"}
-                        items={Object.values(languagedata.langlist).map(function (value) { return { label: value.langName, value: value.langLocale }; })}
-                        Icon={() => { return <Ionicons style={{ marginTop: 2 }} name="md-arrow-down" size={20} color="gray" />; }}
-                    />
-                    : null}
-            </View>
-            <MaterialButtonDark
-                onPress={onPressLoginEmail}
-                style={styles.materialButtonDark}
-            >{t('login')}</MaterialButtonDark>
-            {settings && settings.MobileLoginEnabled ?
+                            label={"Language"}
+                            items={Object.values(languagedata.langlist).map(function (value) { return { label: value.langName, value: value.langLocale }; })}
+                            Icon={() => { return <Ionicons style={{ marginTop: 2 }} name="md-arrow-down" size={20} color="gray" />; }}
+                        />
+                        : null} */}
+                </View>
                 <MaterialButtonDark
-                    onPress={onPressRegister}
-                    style={styles.materialButtonDark2}
-                >{t('register')}</MaterialButtonDark>
-                : null}
-            {(Platform.OS == 'ios' && settings && settings.AppleLoginEnabled) || (settings && settings.FacebookLoginEnabled) ?
-                <View style={styles.seperator}>
-                    <View style={styles.lineLeft}></View>
-                    <View style={styles.lineLeftFiller}>
-                        <Text style={styles.sepText}>{t('spacer_message')}</Text>
+                    onPress={onPressLoginEmail}
+                    style={styles.materialButtonDark}
+                >{t('login')}</MaterialButtonDark>
+                {settings && settings.MobileLoginEnabled ?
+                    <MaterialButtonDark
+                        onPress={onPressRegister}
+                        style={styles.materialButtonDark2}
+                    >{t('register')}</MaterialButtonDark>
+                    : null}
+                {/* {(Platform.OS == 'ios' && settings && settings.AppleLoginEnabled) || (settings && settings.FacebookLoginEnabled) ?
+                    <View style={styles.seperator}>
+                        <View style={styles.lineLeft}></View>
+                        <View style={styles.lineLeftFiller}>
+                            <Text style={styles.sepText}>{t('spacer_message')}</Text>
+                        </View>
+                        <View style={styles.lineRight}></View>
                     </View>
-                    <View style={styles.lineRight}></View>
-                </View>
-                : null}
+                    : null}
 
-            {(Platform.OS == 'ios' && settings && settings.AppleLoginEnabled) || (settings && settings.FacebookLoginEnabled) ?
-                <View style={styles.socialBar}>
-                    {settings && settings.FacebookLoginEnabled ?
-                        <TouchableOpacity style={styles.socialIcon} onPress={FbLogin}>
-                            <Image
-                                source={require("../../assets/images/image_fb.png")}
-                                resizeMode="contain"
-                                style={styles.socialIconImage}
-                            ></Image>
-                        </TouchableOpacity>
-                        : null}
-                    {Platform.OS == 'ios' && settings.AppleLoginEnabled ?
-                        <TouchableOpacity style={styles.socialIcon} onPress={AppleLogin}>
-                            <Image
-                                source={require("../../assets/images/image_apple.png")}
-                                resizeMode="contain"
-                                style={styles.socialIconImage}
-                            ></Image>
-                        </TouchableOpacity>
-                        : null}
+                {(Platform.OS == 'ios' && settings && settings.AppleLoginEnabled) || (settings && settings.FacebookLoginEnabled) ?
+                    <View style={styles.socialBar}>
+                        {settings && settings.FacebookLoginEnabled ?
+                            <TouchableOpacity style={styles.socialIcon} onPress={FbLogin}>
+                                <Image
+                                    source={require("../../assets/images/image_fb.png")}
+                                    resizeMode="contain"
+                                    style={styles.socialIconImage}
+                                ></Image>
+                            </TouchableOpacity>
+                            : null}
+                        {Platform.OS == 'ios' && settings.AppleLoginEnabled ?
+                            <TouchableOpacity style={styles.socialIcon} onPress={AppleLogin}>
+                                <Image
+                                    source={require("../../assets/images/image_apple.png")}
+                                    resizeMode="contain"
+                                    style={styles.socialIconImage}
+                                ></Image>
+                            </TouchableOpacity>
+                            : null}
+                    </View>
+                    : null} */}
+                <View>
+                    <TouchableOpacity style={styles.terms} onPress={openTerms}>
+                        <Text style={styles.actionText}>{t('terms')}</Text>
+                    </TouchableOpacity>
                 </View>
-                : null}
-            <View>
-                <TouchableOpacity style={styles.terms} onPress={openTerms}>
-                    <Text style={styles.actionText}>{t('terms')}</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+            </ImageBackground>
+        </SafeAreaView>
     );
 }
 
@@ -247,12 +256,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     imagebg: {
-        backgroundColor: colors.BRANDING,
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: Dimensions.get('window').width,
-        height: '100%',
+        backgroundColor: colors.BACKGROUND,
+        flex: 1
     },
     topSpace: {
         marginTop: 0,
@@ -345,7 +350,7 @@ const styles = StyleSheet.create({
         opacity: .54
     },
     pickerStyle: {
-        color: colors.BLACK,
+        color: colors.WHITE,
         paddingHorizontal: 24,
         fontSize: 20,
         height: 30,
@@ -357,7 +362,7 @@ const styles = StyleSheet.create({
     },
     headLanuage:{
         position: 'absolute', 
-        top: 40,  
+        top: 64,  
         flexDirection: 'row', 
         alignItems: 'center', 
         borderWidth: 0.3,

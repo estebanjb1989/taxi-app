@@ -12,7 +12,7 @@ import { Text,
     Platform
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import SideMenuHeader from './SideMenuHeader';
 import { colors } from '../common/theme';
 var { width } = Dimensions.get('window');
@@ -68,9 +68,9 @@ export default function SideMenu(props){
 
     //navigation to screens from side menu
     const navigateToScreen = (route) => () => {
-        const navigateAction = NavigationActions.navigate({
-            routeName: route
-        });
+        // const navigateAction = NavigationActions.navigate({
+        //     routeName: route
+        // });
         props.navigation.dispatch(navigateAction);
     }
     

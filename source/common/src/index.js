@@ -1,8 +1,14 @@
 import React, { createContext } from 'react';
-import app from 'firebase/app';
-import 'firebase/database';
-import 'firebase/auth';
-import 'firebase/storage';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref } from 'firebase/database';
+import { 
+    getAuth, 
+    RecaptchaVerifier, 
+    FacebookAuthProvider, 
+    GoogleAuthProvider, 
+    OAuthProvider, 
+    PhoneAuthProvider,
+} from 'firebase/auth';
 import store from './store/store';
 
 import {
@@ -128,6 +134,7 @@ import {
 import {
     RequestPushMsg
 } from './other/NotificationFunctions';
+import { getStorage } from 'firebase/storage';
 
 const FirebaseContext = createContext(null);
 
@@ -138,62 +145,70 @@ const FirebaseProvider  = ({ config, appcat, children }) => {
         auth: null,
         storage: null,
     }
+    
+    if (true) {
+        const app = initializeApp(config);
 
-    if (!app.apps.length) {
-        app.initializeApp(config);
+        if (!app) {
+            console.log(app)
+            throw new Error("no firebase app provided");
+        }
+
+        const auth = getAuth(app)
+        const database = getDatabase(app)
         firebase = {
             app: app,
             config: config,
             appcat: appcat,
-            database: app.database(),
-            auth: app.auth(),
-            storage: app.storage(),
-            authRef: app.auth(),
-            facebookProvider:new app.auth.FacebookAuthProvider(),
-            googleProvider:new app.auth.GoogleAuthProvider(),
-            appleProvider:new app.auth.OAuthProvider('apple.com'),
-            phoneProvider:new app.auth.PhoneAuthProvider(),          
-            RecaptchaVerifier: app.auth.RecaptchaVerifier,
-            captchaGenerator: (element) => new app.auth.RecaptchaVerifier(element),           
-            facebookCredential: (token) => app.auth.FacebookAuthProvider.credential(token),
-            googleCredential: (idToken) => app.auth.GoogleAuthProvider.credential(idToken),
-            mobileAuthCredential: (verificationId,code) => app.auth.PhoneAuthProvider.credential(verificationId, code),           
-            usersRef: app.database().ref("users"),
-            bookingRef:app.database().ref("bookings"),
-            cancelreasonRef:app.database().ref("cancel_reason"),
-            settingsRef:app.database().ref("settings"),
-            carTypesRef:app.database().ref("cartypes"),   
-            carTypesEditRef:(id) => app.database().ref("cartypes/"+ id),            
-            promoRef:app.database().ref("promos"),
-            promoEditRef:(id) => app.database().ref("promos/"+ id),
-            notifyRef:app.database().ref("notifications/"),
-            notifyEditRef:(id) => app.database().ref("notifications/"+ id),
-            singleUserRef:(uid) => app.database().ref("users/" + uid),
+            database: database,
+            auth: auth,
+            storage: getStorage(app),
+            authRef: auth,
+            facebookProvider:new FacebookAuthProvider(),
+            googleProvider:new GoogleAuthProvider(),
+            appleProvider:new OAuthProvider('apple.com'),
+            phoneProvider:new PhoneAuthProvider(),          
+            RecaptchaVerifier: RecaptchaVerifier,
+            captchaGenerator: (element) => new RecaptchaVerifier(element),           
+            facebookCredential: (token) => FacebookAuthProvider.credential(token),
+            googleCredential: (idToken) => GoogleAuthProvider.credential(idToken),
+            mobileAuthCredential: (verificationId,code) => PhoneAuthProvider.credential(verificationId, code),           
+            usersRef: ref(database, "users"),
+            bookingRef:ref(database, "bookings"),
+            cancelreasonRef:ref(database, "cancel_reason"),
+            settingsRef:ref(database, "settings"),
+            carTypesRef:ref(database, "cartypes"),   
+            carTypesEditRef:(id) => ref(database, "cartypes/"+ id),            
+            promoRef:ref(database, "promos"),
+            promoEditRef:(id) => ref(database, "promos/"+ id),
+            notifyRef:ref(database, "notifications/"),
+            notifyEditRef:(id) => ref(database, "notifications/"+ id),
+            singleUserRef:(uid) => ref(database, "users/" + uid),
             profileImageRef:(uid) => app.storage().ref(`users/${uid}/profileImage`),
             bookingImageRef:(bookingId,imageType) => app.storage().ref(`bookings/${bookingId}/${imageType}`),
             driverDocsRef:(uid,timestamp) => app.storage().ref(`users/${uid}/driverDocuments/${timestamp}/`),          
-            singleBookingRef:(bookingKey) => app.database().ref("bookings/" + bookingKey),
-            requestedDriversRef:(bookingKey ) => app.database().ref("bookings/" + bookingKey  + "/requestedDrivers"),
-            walletBalRef:(uid) => app.database().ref("users/" + uid + "/walletBalance"),
-            walletHistoryRef:(uid) => app.database().ref("users/" + uid + "/walletHistory"),  
-            referralIdRef:(referralId) => app.database().ref("users").orderByChild("referralId").equalTo(referralId),
-            trackingRef: (bookingId) => app.database().ref('tracking/' + bookingId),
-            tasksRef:() => app.database().ref('bookings').orderByChild('status').equalTo('NEW'),
-            singleTaskRef:(uid,bookingId) => app.database().ref("bookings/" + bookingId  + "/requestedDrivers/" + uid),
+            singleBookingRef:(bookingKey) => ref(database, "bookings/" + bookingKey),
+            requestedDriversRef:(bookingKey ) => ref(database, "bookings/" + bookingKey  + "/requestedDrivers"),
+            walletBalRef:(uid) => ref(database, "users/" + uid + "/walletBalance"),
+            walletHistoryRef:(uid) => ref(database, "users/" + uid + "/walletHistory"),  
+            referralIdRef:(referralId) => ref(database, "users").orderByChild("referralId").equalTo(referralId),
+            trackingRef: (bookingId) => ref(database, 'tracking/' + bookingId),
+            tasksRef:() => ref(database, 'bookings').orderByChild('status').equalTo('NEW'),
+            singleTaskRef:(uid,bookingId) => ref(database, "bookings/" + bookingId  + "/requestedDrivers/" + uid),
             bookingListRef:(uid,role) => 
-                role == 'rider'? app.database().ref('bookings').orderByChild('customer').equalTo(uid):
+                role == 'rider'? ref(database, 'bookings').orderByChild('customer').equalTo(uid):
                     (role == 'driver'? 
-                        app.database().ref('bookings').orderByChild('driver').equalTo(uid)
+                        ref(database, 'bookings').orderByChild('driver').equalTo(uid)
                         :
                         (role == 'fleetadmin'? 
-                            app.database().ref('bookings').orderByChild('fleetadmin').equalTo(uid)
-                            : app.database().ref('bookings')
+                            ref(database, 'bookings').orderByChild('fleetadmin').equalTo(uid)
+                            : ref(database, 'bookings')
                         )
                     ),
-            chatRef:(bookingId) => app.database().ref('chats/' + bookingId + '/messages'),
-            withdrawRef:app.database().ref('withdraws/'),
-            languagesRef:app.database().ref("languages"),
-            languagesEditRef:(id) => app.database().ref("languages/"+ id),
+            chatRef:(bookingId) => ref(database, 'chats/' + bookingId + '/messages'),
+            withdrawRef:ref(database, 'withdraws/'),
+            languagesRef: ref(database, "languages"),
+            languagesEditRef:(id) => ref(database, "languages/"+ id),
             api: {
                 MinutesPassed: MinutesPassed, 
                 GetDateString: GetDateString, 
@@ -210,10 +225,10 @@ const FirebaseProvider  = ({ config, appcat, children }) => {
                 countries: countries,
                 GetDistance: GetDistance, 
                 GetTripDistance: GetTripDistance,
-                saveUserLocation: (uid,location) => app.database().ref('users/' + uid + '/location').set(location),
-                saveTracking: (bookingId, location) => app.database().ref('tracking/' + bookingId).push(location),
+                saveUserLocation: (uid,location) => ref(database, 'users/' + uid + '/location').set(location),
+                saveTracking: (bookingId, location) => ref(database, 'tracking/' + bookingId).push(location),
 
-                saveUserNotification:(uid,notification) => app.database().ref("users/" + uid + "/notifications").push(notification),
+                saveUserNotification:(uid,notification) => ref(database, "users/" + uid + "/notifications").push(notification),
 
                 validateReferer: (referralId) => validateReferer(referralId)(firebase), 
                 checkUserExists: (regData) => checkUserExists(regData)(firebase), 

@@ -12,18 +12,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { FirebaseContext } from 'common/src';
 import * as Notifications from 'expo-notifications';
 import { colors } from '../common/theme';
-import { createAnimatedPropAdapter } from 'react-native-reanimated';
+import { useNavigation } from "@react-navigation/native"
+import splashAsset from "../../assets/images/splash.png"
+//import { createAnimatedPropAdapter } from 'react-native-reanimated';
 
 export default function AuthLoadingScreen(props) {
   const { t } = i18n;
   const isRTL = i18n.locale.indexOf('he') === 0 || i18n.locale.indexOf('ar') === 0;
-  const { api } = useContext(FirebaseContext);
+  const { api } = useContext(FirebaseContext) || {};
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const languagedata = useSelector(state => state.languagedata);
   const settings = useSelector(state => state.settingsdata.settings);
   const notificationListener = useRef();
   const responseListener = useRef();
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (auth.info && languagedata &&  languagedata.langlist && settings) {
@@ -37,9 +40,9 @@ export default function AuthLoadingScreen(props) {
           const nData = response.notification.request.content.data;
           if(nData.screen){
             if(nData.params){
-                props.navigation.navigate(nData.screen, nData.params);
+                navigation.navigate(nData.screen, nData.params);
             }else{
-                props.navigation.navigate(nData.screen);
+                navigation.navigate(nData.screen);
             }
           }
         });
@@ -52,29 +55,32 @@ export default function AuthLoadingScreen(props) {
             dispatch(api.fetchCancelReasons());
             dispatch(api.fetchPaymentMethods());
             dispatch(api.fetchPromos());
-            isRTL ? props.navigation.navigate('RightRiderRoot'): props.navigation.navigate('LeftRiderRoot');
+            isRTL ? navigation.navigate('RightRiderRoot'): navigation.navigate('LeftRiderRoot');
           } else if (role === 'driver') {
             dispatch(api.monitorProfileChanges());
             dispatch(api.fetchBookings(auth.info.uid, role));
             dispatch(api.fetchPaymentMethods());
             dispatch(api.fetchTasks());
-            isRTL ? props.navigation.navigate('RightDriverRoot'): props.navigation.navigate('LeftDriverRoot');
+            isRTL ? navigation.navigate('RightDriverRoot'): navigation.navigate('LeftDriverRoot');
           }
           else {
             Alert.alert(t('alert'), t('not_valid_user_type'));
             dispatch(api.signOut());
-            props.navigation.navigate('Intro');
+            console.log('not_valid_user_type')
+            navigation.navigate('Intro');
           }
         }
         else {
           Alert.alert(t('alert'), t('require_approval'));
           dispatch(api.signOut());
-          props.navigation.navigate('Intro');
+          console.log('require_approval')
+          navigation.navigate('Intro');
         }
       }else{
         Alert.alert(t('alert'), t('user_issue_contact_admin'));
         dispatch(api.signOut());
-        props.navigation.navigate('Intro');
+        console.log('user_issue_contact_admin')
+        navigation.navigate('Auth', { screen: 'Intro' });
       }
     }
   }, [auth.info,languagedata,languagedata.langlist,settings]);
@@ -83,14 +89,14 @@ export default function AuthLoadingScreen(props) {
   useEffect(() => {
     if (api && languagedata &&  languagedata.langlist && auth.error && auth.error.msg && !auth.info && settings) {
       dispatch(api.clearLoginError());
-      props.navigation.navigate('Intro');
+      navigation.navigate('Auth');
     }
   }, [auth.error,auth.error.msg,languagedata &&  languagedata.langlist, settings]);
 
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../../assets/images/intro.jpg')}
+        source={splashAsset}
         resizeMode="stretch"
         style={styles.imagebg}
       >

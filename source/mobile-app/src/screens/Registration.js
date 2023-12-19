@@ -2,11 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Registration } from '../components';
 import { StyleSheet, View, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from "@react-navigation/native"
 
 import i18n from 'i18n-js';
 import { FirebaseContext } from 'common/src';
 
 export default function RegistrationPage(props) {
+  const navigation = useNavigation();
   const { api } = useContext(FirebaseContext);
   const {
     emailSignUp, 
@@ -33,60 +35,60 @@ export default function RegistrationPage(props) {
   }, [cars]);
 
   const clickRegister = async (regData) => {
+
     setLoading(true);
-    checkUserExists(regData).then((res)=>{
-      if(res.users && res.users.length>0){
-        setLoading(false);
-        Alert.alert(t('alert'),t('user_exists'));
-      }
-      else if(res.error){
-        setLoading(false);
-        Alert.alert(t('alert'),t('email_or_mobile_issue'));
-      }
-      else{
-        if (regData.referralId && regData.referralId.length > 0) {
-          validateReferer(regData.referralId).then((referralInfo)=>{
-            if (referralInfo.uid) {
-              emailSignUp({...regData, signupViaReferral: referralInfo.uid}).then((res)=>{
-                setLoading(false);
-                if(res.uid){
-                  if(settings.email_verify){
-                    Alert.alert(t('email_verify_message'))
-                    dispatch(signIn(regData.email,regData.password));
-                  }else{
-                    Alert.alert(t('alert'),t('account_create_successfully'));
-                  }
-                  props.navigation.goBack();
-                }else{
-                  Alert.alert(t('alert'),t('reg_error'));
-                }
-              })
-            }else{
+    const res = await checkUserExists(regData)
+    if(res){
+      setLoading(false);
+      Alert.alert(t('alert'),t('user_exists'));
+    }
+    // else if(res.error){
+    //   setLoading(false);
+    //   Alert.alert(t('alert'),t('email_or_mobile_issue'));
+    // }
+    else{
+      if (regData.referralId && regData.referralId.length > 0) {
+        validateReferer(regData.referralId).then((referralInfo)=>{
+          if (referralInfo.uid) {
+            emailSignUp({...regData, signupViaReferral: referralInfo.uid}).then((res)=>{
               setLoading(false);
-              Alert.alert(t('alert'),t('referer_not_found'))
-            }
-          }).catch((error)=>{
+              if(res.uid){
+                if(settings.email_verify){
+                  Alert.alert(t('email_verify_message'))
+                  dispatch(signIn(regData.email,regData.password));
+                }else{
+                  Alert.alert(t('alert'),t('account_create_successfully'));
+                }
+                props.navigation.goBack();
+              }else{
+                Alert.alert(t('alert'),t('reg_error'));
+              }
+            })
+          }else{
             setLoading(false);
             Alert.alert(t('alert'),t('referer_not_found'))
-          });
-        } else {
-          emailSignUp(regData).then((res)=>{
-            setLoading(false);
-            if(res.uid){
-              if(settings.email_verify){
-                Alert.alert(t('email_verify_message'))
-                dispatch(signIn(regData.email,regData.password));
-              }else{
-                Alert.alert(t('alert'),t('account_create_successfully'));
-              }
-              props.navigation.goBack();
-            }else{
-              Alert.alert(t('alert'),t('reg_error'));
-            }
-          })
+          }
+        }).catch((error)=>{
+          setLoading(false);
+          Alert.alert(t('alert'),t('referer_not_found'))
+        });
+      } else {
+        const res = await emailSignUp(regData)
+        console.log(res)
+        setLoading(false);
+        if(res.uid){
+          if(settings.email_verify){
+            Alert.alert(t('email_verify_message'))
+            dispatch(signIn(regData.email,regData.password));
+          }else{
+            Alert.alert(t('alert'),t('account_create_successfully'));
+          }
+          navigation.goBack();
+        }else{
+          Alert.alert(t('alert'),t('reg_error'));
         }
       }
-    });
+    }
   }
 
   return (

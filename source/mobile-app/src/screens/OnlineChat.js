@@ -16,7 +16,7 @@ import { Header } from "react-native-elements";
 import i18n from 'i18n-js';
 var { height } = Dimensions.get('window');
 import { useSelector, useDispatch } from 'react-redux';
-import { NavigationEvents } from 'react-navigation';
+//import { NavigationEvents } from 'react-navigation';
 import { ScrollView } from "react-native-gesture-handler";
 import { FirebaseContext } from 'common/src';
 
@@ -80,14 +80,14 @@ export default function OnlineChat(props) {
 
   return (
     <View style={styles.container}>
-      <NavigationEvents
+      {/* <NavigationEvents
         onWillFocus={payload => {
           dispatch(fetchChatMessages(bookingId));
         }}
         onWillBlur={payload => {
           dispatch(stopFetchMessages(bookingId));
         }}
-      />
+      /> */}
       <Header
         leftComponent={isRTL? null : lCom }
         rightComponent={isRTL? rCom : null }

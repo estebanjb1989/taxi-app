@@ -19,7 +19,7 @@ var { height, width } = Dimensions.get('window');
 import i18n from 'i18n-js';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useSelector, useDispatch } from 'react-redux';
-import { NavigationEvents } from 'react-navigation';
+//import { NavigationEvents } from 'react-navigation';
 import { FirebaseContext } from 'common/src';
 import { OptionModal } from 'components/OptionModal';
 import { LoadingModal } from 'components/LoadingModal';
@@ -672,14 +672,14 @@ export default function MapScreen(props) {
 
     return (
         <View style={styles.container}>
-            <NavigationEvents
+            {/* <NavigationEvents
                 onDidFocus={payload => {
                     pageActive.current = true;
                 }}
                 onWillBlur={payload => {
                     pageActive.current = false;
                 }}
-            />
+            /> */}
             <StatusBar hidden={true} />
             <View style={styles.mapcontainer}>
                 {region ?

@@ -38,6 +38,7 @@ export default function Parallax(props) {
     [classes.small]: small,
     [className]: className !== undefined
   });
+  
   return (
     <div
       className={parallaxClasses}

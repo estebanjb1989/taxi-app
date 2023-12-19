@@ -6,6 +6,8 @@ import {
 } from "../store/types";
 import store from '../store/store';
 
+import { onValue } from "firebase/database"
+
 export const fetchCarTypes = () => (dispatch) => (firebase) => {
 
   const {
@@ -16,7 +18,7 @@ export const fetchCarTypes = () => (dispatch) => (firebase) => {
     type: FETCH_CAR_TYPES,
     payload: null
   });
-  carTypesRef.on("value", snapshot => {
+  onValue(carTypesRef, snapshot => {
     if (snapshot.val()) {
       let data = snapshot.val();
       const arr = Object.keys(data).map(i => {

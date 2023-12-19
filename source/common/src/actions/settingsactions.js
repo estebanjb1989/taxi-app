@@ -8,6 +8,7 @@ import {
 
 import store from '../store/store';
 
+import { onValue } from "firebase/database"
 export const fetchSettings= () => (dispatch) => (firebase) => {
 
   const {
@@ -18,7 +19,7 @@ export const fetchSettings= () => (dispatch) => (firebase) => {
     type: FETCH_SETTINGS,
     payload: null,
   });
-  settingsRef.on("value", (snapshot) => {
+  onValue(settingsRef, (snapshot) => {
     if (snapshot.val()) {
       dispatch({
         type: FETCH_SETTINGS_SUCCESS,

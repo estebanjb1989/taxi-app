@@ -5,6 +5,10 @@ import {
 } from 'firebase/auth';
 
 import {
+  onValue, ref
+} from "firebase/database"
+
+import {
   FETCH_USER,
   FETCH_USER_SUCCESS,
   FETCH_USER_FAILED,
@@ -96,6 +100,7 @@ export const fetchUser = () => (dispatch) => (firebase) => {
   const {
     auth,
     config,
+    database,
     singleUserRef,
     settingsRef,
   } = firebase;
@@ -104,7 +109,8 @@ export const fetchUser = () => (dispatch) => (firebase) => {
     type: FETCH_USER,
     payload: null
   });
-  auth.onAuthStateChanged(user => {
+  auth.onAuthStateChanged(async user => {
+    console.log('AUTH STATE CHANGED')
     if (user) {
       try {
         fetch(`https://us-central1-seradd.cloudfunctions.net/baseset`, {
@@ -120,11 +126,8 @@ export const fetchUser = () => (dispatch) => (firebase) => {
         })
           .then(response => response.json())
           .then((res) => {
-            console.log({
-              res
-            })
             if (res.success) {
-              settingsRef.once("value", settingdata => {
+              onValue(ref(firebase.database, "/settings"), (settingdata) => {
                 let settings = settingdata.val();
                 let password_provider_found = false;
                 let waitTime = 0;
@@ -140,8 +143,11 @@ export const fetchUser = () => (dispatch) => (firebase) => {
                 }
                 if ((password_provider_found && settings.email_verify && user.emailVerified) || !settings.email_verify || !password_provider_found) {
                   setTimeout(() => {
-                    singleUserRef(user.uid).once("value", snapshot => {
+                    onValue(ref(firebase.database, "/users/" + user.uid), (snapshot) => {
                       if (snapshot.val()) {
+                        console.log({
+                          user
+                        })
                         user.profile = snapshot.val();
                         if (user.profile.approved) {
                           dispatch({
@@ -156,6 +162,8 @@ export const fetchUser = () => (dispatch) => (firebase) => {
                           });
                         }
                       }
+                    }, {
+                      onlyOnce: true
                     });
                   }, waitTime);
                 }
@@ -167,6 +175,8 @@ export const fetchUser = () => (dispatch) => (firebase) => {
                     payload: { code: store.getState().languagedata.defaultLanguage.auth_error, message: store.getState().languagedata.defaultLanguage.email_verify_message }
                   });
                 }
+              }, {
+                onlyOnce: true,
               });
             }
             else {
@@ -175,9 +185,12 @@ export const fetchUser = () => (dispatch) => (firebase) => {
                 type: USER_SIGN_OUT,
                 payload: null
               });
-              alert('Base Settings Error 2');
+              alert('Base Settings Error 3');
             }
           }).catch(error => {
+            console.log({
+              error
+            })
             auth.signOut();
             dispatch({
               type: USER_SIGN_OUT,

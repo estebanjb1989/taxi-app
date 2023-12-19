@@ -268,7 +268,12 @@ export default function Registration(props) {
                         uploadImage()
                     }
                     <View style={styles.logo}>
-                        <Image source={require('../../assets/images/logo165x90white.png')} />
+                        <Image source={require('../../assets/images/logo512x512.jpeg')} style={{
+                            height: 180,
+                            width: 180
+                        }} 
+                            resizeMode='stretch'
+                        />
                     </View>
                     <View style={styles.form}>
                         <View style={[styles.containerStyle, isRTL ? { marginRight: 10, marginLeft: 20 } : { marginLeft: 0, marginRight: 20 }]}>
